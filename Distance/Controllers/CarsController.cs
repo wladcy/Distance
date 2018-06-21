@@ -9,6 +9,7 @@ using System.Data.Entity;
 
 namespace Distance.Controllers
 {
+    [Authorize]
     public class CarsController : Controller
     {
         private ApplicationDbContext _context;

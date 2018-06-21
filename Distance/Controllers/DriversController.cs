@@ -9,6 +9,7 @@ using Distance.ViewModels;
 
 namespace Distance.Controllers
 {
+    [Authorize]
     public class DriversController : Controller
     {
         private ApplicationDbContext _context;
@@ -76,7 +77,7 @@ namespace Distance.Controllers
         {
             var drivers = _context.Drivers.Include(d => d.AccountType).ToList(); 
             
-            return View(drivers);
+            return View();
         }
 
         //szczegóły kierowcow
