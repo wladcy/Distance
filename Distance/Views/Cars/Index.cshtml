@@ -1,0 +1,67 @@
+﻿@model IEnumerable<Distance.Models.Car>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Dostępne samochody</h2>
+
+<p>
+    @Html.ActionLink("DODAJ SAMOCHOD", "New", "Cars", null, new { @class = "btn btn-primary" })
+</p>
+
+<table id="cars" class="table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>MARKA</th>
+            <th>MODEL</th>
+            <th>REJESTRACJA</th>
+            <th>PRZEBIEG W KM</th>
+            <th>DOSTĘPNOŚC</th>
+            <th>USUŃ</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var car in Model)
+        {
+            <tr>
+                <td>@Html.ActionLink(car.Name, "Edit", "Cars", new { id = car.Id }, null)</td>
+                <td>@car.Model</td>
+                <td>@car.CarPlate</td>
+                <td>@car.KmAge</td>
+                <td>@car.CarStatus.StatusName</td>
+                <td>
+                    <button data-car-id="@car.Id" class="btn-link js-delete">USUŃ</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            $("#cars").DataTable();
+
+            $("#cars").on("click", ".js-delete", function () {
+                var button = $(this);
+
+                bootbox.confirm("Czy napewno chcesz usunąć tego kierowcę?",
+                    function(result) {
+                        if (result) {
+                            $.ajax({
+                                url: "/api/cars/" + button.attr("data-car-id"),
+                                method: "DELETE",
+                                success: function() {
+                                    button.parents("tr").remove();
+                                }
+                            });
+                        }
+                    });
+            });
+        });
+    </script>
+}
+

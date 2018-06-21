@@ -1,0 +1,48 @@
+﻿@model Distance.ViewModels.NewCarViewModel
+
+@{
+    ViewBag.Title = "CarForm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@Model.Title</h2>
+
+@using (Html.BeginForm("Save", "Cars"))
+{
+    @Html.ValidationSummary()
+    <div class="form-group">
+        @Html.LabelFor(m => m.Name)
+        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Name)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Model)
+        @Html.TextBoxFor(m => m.Model, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Model)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.CarPlate)
+        @Html.TextBoxFor(m => m.CarPlate, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.CarPlate)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.KmAge)
+        @Html.TextBoxFor(m => m.KmAge, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.KmAge)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.CarStatusId)
+        @Html.DropDownListFor(m => m.CarStatusId, new SelectList(Model.CarStatuses, "Id", "StatusName"), " ", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.CarStatusId)
+    </div>
+
+
+    @Html.HiddenFor(m => m.Id)
+    @Html.AntiForgeryToken()
+    <button type="submit" class="btn btn-primary">DODAJ</button>
+}
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+}

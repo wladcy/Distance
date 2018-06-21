@@ -1,0 +1,69 @@
+﻿@model IEnumerable<Distance.Models.Driver>
+
+@{ 
+    ViewBag.Title = "Drivers";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Kierowcy w firmie</h2>
+
+<p>
+    @Html.ActionLink("DODAJ KIEROWCE", "New", "Drivers", null, new { @class = "btn btn-primary" })
+</p>
+
+@if(!Model.Any())
+{
+    <p>Obecnie nie ma kierowców</p>
+}
+else
+{
+    <table id="drivers" class="table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>KIEROWCA</th>
+                <th>ZNIŻKA</th>
+                <th>TYP KONTA</th>
+                <th>USUŃ</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var driver in Model)
+            {
+                <tr>
+                    <td>@Html.ActionLink(driver.Name +" " +driver.Surname, "Edit", "Drivers", new { id = driver.Id }, null )</td>
+                    <td>@driver.AccountType.DiscountRate</td>
+                    <td>@driver.AccountType.Name</td>
+                    <td>
+                        <button data-driver-id="@driver.Id" class="btn-link js-delete">USUŃ</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            $("#drivers").DataTable();
+
+            $("#drivers").on("click", ".js-delete", function () {
+                var button = $(this);
+
+                bootbox.confirm("Czy napewno chcesz usunąć tego kierowcę?",
+                    function(result) {
+                        if (result) {
+                            $.ajax({
+                                url: "/api/drivers/" + button.attr("data-driver-id"),
+                                method: "DELETE",
+                                success: function() {
+                                    button.parents("tr").remove();
+                                }
+                            });
+                        }
+                    });
+            });
+        });
+    </script>
+}
