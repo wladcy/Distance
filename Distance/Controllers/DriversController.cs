@@ -77,7 +77,7 @@ namespace Distance.Controllers
         {
             var drivers = _context.Drivers.Include(d => d.AccountType).ToList(); 
             
-            return View();
+            return View(drivers);
         }
 
         //szczegóły kierowcow
