@@ -1,12 +1,13 @@
-﻿using System;
+﻿using Distance.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
-namespace Distance.Models
+namespace Distance.Validators
 {
-    public class Min18YearsIfADriver : ValidationAttribute
+    public class Min18YearsIfADriverValidator : ValidationAttribute
     {
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {

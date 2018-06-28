@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Distance.Validators;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Distance.Models
@@ -73,6 +74,7 @@ namespace Distance.Models
         [StringLength(100, ErrorMessage = "Hasło mus mieć przynajmniej 6 znaków długości.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Hasło")]
+        [PasswordValidator]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]

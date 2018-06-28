@@ -11,6 +11,10 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using Distance.Models;
+using System.Net.Mail;
+using System.Web.Configuration;
+using System.Net;
+using Distance.App_Start;
 
 namespace Distance
 {
@@ -18,7 +22,30 @@ namespace Distance
     {
         public Task SendAsync(IdentityMessage message)
         {
-            // Plug in your email service here to send an email.
+            var fromAddress = new MailAddress(WebConfigurationManager.AppSettings["mailAccount"], "Company Cars Distance");
+            var toAddress = new MailAddress(message.Destination);
+            string fromPassword = WebConfigurationManager.AppSettings["mailPassword"];
+            string subject = message.Subject;
+            string body = message.Body;
+
+            var smtp = new SmtpClient
+            {
+                Host = WebConfigurationManager.AppSettings["host"],
+                Port = int.Parse(WebConfigurationManager.AppSettings["port"]),
+                EnableSsl = bool.Parse(WebConfigurationManager.AppSettings["enableSsl"]),
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                UseDefaultCredentials = false,
+                Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
+            };
+            using (var mail = new MailMessage(fromAddress, toAddress)
+            {
+                Subject = subject,
+                Body = body
+            })
+            {
+                mail.IsBodyHtml = true;
+                smtp.Send(mail);
+            }
             return Task.FromResult(0);
         }
     }
@@ -53,11 +80,11 @@ namespace Distance
             // Configure validation logic for passwords
             manager.PasswordValidator = new PasswordValidator
             {
-                RequiredLength = 6,
-                RequireNonLetterOrDigit = true,
-                RequireDigit = true,
-                RequireLowercase = true,
-                RequireUppercase = true,
+                RequiredLength = PasswordIdentityConfig.REQUIREDLENGTH,
+                RequireNonLetterOrDigit = PasswordIdentityConfig.REQUIRENONLETTERORDIGITIDENTITY,
+                RequireDigit = PasswordIdentityConfig.REQUIREDIGITIDENTITY,
+                RequireLowercase = PasswordIdentityConfig.REQUIRELOWERCASEIDENTITY,
+                RequireUppercase = PasswordIdentityConfig.REQUIREUPPERCASEIDENTITY,
             };
 
             // Configure user lockout defaults

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Distance.Validators;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -21,7 +22,7 @@ namespace Distance.Models
         public string Surname { get; set; } //nazwisko
 
         [Display(Name = "Data urodzenia")]
-        [Min18YearsIfADriver]
+        [Min18YearsIfADriverValidator]
         public DateTime? Birthdate { get; set; } //data urodzenia
 
         //konto premium
