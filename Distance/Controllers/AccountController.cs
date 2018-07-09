@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Distance.Models;
+using System.Collections.Generic;
 
 namespace Distance.Controllers
 {
@@ -86,7 +87,7 @@ namespace Distance.Controllers
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
                 case SignInStatus.Failure:
                 default:
-                    ModelState.AddModelError("", "Invalid login attempt.");
+                    ModelState.AddModelError("", "Niepoprawne dane logowania.");
                     return View(model);
             }
         }
@@ -163,7 +164,7 @@ namespace Distance.Controllers
                     var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     await UserManager.SendEmailAsync(user.Id, "Potwierdź konto", "Kliknij <a href=\"" + callbackUrl + "\">link</a>, aby potwierdzić utworzenie konta.");
 
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Home" , new { Message = AccountMessageId.RegisterAccountSuccess });
                 }
                 AddErrors(result);
             }
@@ -213,7 +214,7 @@ namespace Distance.Controllers
                 // Send an email with this link
                 string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
                 var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                await UserManager.SendEmailAsync(user.Id, "Zmiana hasła", "Naciśnij <a href=\"" + callbackUrl + "\">tutaj</a>, aby zmieić hasło.");
                 return RedirectToAction("ForgotPasswordConfirmation", "Account");
             }
 
@@ -258,6 +259,13 @@ namespace Distance.Controllers
             if (result.Succeeded)
             {
                 return RedirectToAction("ResetPasswordConfirmation", "Account");
+            }
+
+            if(result.Errors.FirstOrDefault().Equals("Invalid token."))
+            {
+                List<string> errors = new List<string>();
+                errors.Add("Błąd przetwarzania. Wyślij ponownie mail zmiany hasła.");
+                result = new IdentityResult(errors);
             }
             AddErrors(result);
             return View();

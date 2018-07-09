@@ -8,8 +8,10 @@ namespace Distance.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index()
+        public ActionResult Index(AccountMessageId? message)
         {
+            ViewBag.StatusMessage =
+                message == AccountMessageId.RegisterAccountSuccess ? "Konto zostało utworzone. Na maila dostałeś instrukcję pełnej aktywacji." : "";
             return View();
         }
 
@@ -26,5 +28,10 @@ namespace Distance.Controllers
 
             return View();
         }
+    }
+
+    public enum AccountMessageId
+    {
+        RegisterAccountSuccess
     }
 }

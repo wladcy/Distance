@@ -13,7 +13,7 @@ namespace Distance.Validators
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             ValidationResult retval = new ValidationResult("");
-            RegisterViewModel rvm = (RegisterViewModel)validationContext.ObjectInstance;
+            IPasswordViewModels rvm = (IPasswordViewModels)validationContext.ObjectInstance;
             int nonLetterAndDigit = 0;
             int digit = 0;
             int upperCase = 0;
