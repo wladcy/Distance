@@ -15,6 +15,8 @@ using System.Net.Mail;
 using System.Web.Configuration;
 using System.Net;
 using Distance.App_Start;
+using System.IO.Ports;
+using System.Threading;
 
 namespace Distance
 {
@@ -54,7 +56,17 @@ namespace Distance
     {
         public Task SendAsync(IdentityMessage message)
         {
-            // Plug in your SMS service here to send a text message.
+            //port name depends on modem port
+            SerialPort sp = new SerialPort("COM3", 19200);
+            Thread.Sleep(1000);
+            sp.Open();
+            Thread.Sleep(1000);
+            sp.Write("AT+CMGF=1\r\n");
+            Thread.Sleep(1000);
+            sp.Write("AT+CMGS=\"" + message.Destination + "\"\r\n");
+            sp.Write(message.Body + "\x1A");
+            Thread.Sleep(1000);
+            sp.Close();
             return Task.FromResult(0);
         }
     }
@@ -94,14 +106,14 @@ namespace Distance
 
             // Register two factor authentication providers. This application uses Phone and Emails as a step of receiving a code for verifying the user
             // You can write your own provider and plug it in here.
-            manager.RegisterTwoFactorProvider("Phone Code", new PhoneNumberTokenProvider<ApplicationUser>
+            manager.RegisterTwoFactorProvider("Telefon", new PhoneNumberTokenProvider<ApplicationUser>
             {
-                MessageFormat = "Your security code is {0}"
+                MessageFormat = "Twoj kod dostepu: {0}"
             });
-            manager.RegisterTwoFactorProvider("Email Code", new EmailTokenProvider<ApplicationUser>
+            manager.RegisterTwoFactorProvider("Email", new EmailTokenProvider<ApplicationUser>
             {
-                Subject = "Security Code",
-                BodyFormat = "Your security code is {0}"
+                Subject = "Kod dostępu",
+                BodyFormat = "Twój kod dostępu: {0}"
             });
             manager.EmailService = new EmailService();
             manager.SmsService = new SmsService();
