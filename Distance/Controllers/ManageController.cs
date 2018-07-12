@@ -103,7 +103,12 @@ namespace Distance.Controllers
         // GET: /Manage/AddPhoneNumber
         public ActionResult AddPhoneNumber()
         {
-            return View();
+            DatabaseControler dc = new DatabaseControler();
+            var list = dc.GetDirectPhoneNumbers();
+            var model = new AddPhoneNumberViewModel();
+            SelectList slist = new SelectList(list, "Id", "Name", "Polska");
+            model.Countries = slist;
+            return View(model);
         }
 
         //

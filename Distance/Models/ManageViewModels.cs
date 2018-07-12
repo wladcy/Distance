@@ -66,6 +66,19 @@ namespace Distance.Models
         [Phone]
         [Display(Name = "Numer telefonu")]
         public string Number { get; set; }
+
+        [Display(Name ="Numer kierunkowy")]
+        public string DirectPhoneNumber { get; set; }
+
+        public System.Web.Mvc.SelectList Countries { get; set; }
+
+        public class DirectPhones
+        {
+            public int Id { get; set; }
+            public string Name { get; set; }
+        }
+
+        public string Country { get; set; }
     }
 
     public class VerifyPhoneNumberViewModel

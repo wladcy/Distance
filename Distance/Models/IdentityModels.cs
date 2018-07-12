@@ -1,4 +1,6 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.Data.Entity;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
@@ -18,6 +20,21 @@ namespace Distance.Models
         }
     }
 
+    public class DicCountries
+    {
+        [Key]
+        public int CountryID { get; set; }
+
+        public string CountryName { get; set; }
+        public string CountryCodeA2 { get; set; }
+        public string CountryCodeA3 { get; set; }
+        public byte[] CountryFlagData { get; set; }
+        public string CountryFlagMimeType { get; set; }
+        public string CountryDirectPhoneNumber { get; set; }
+        public DateTime CreateTime { get; set; }
+        public DateTime ModifyTime { get; set; }
+    }
+
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
 
@@ -25,6 +42,7 @@ namespace Distance.Models
         public DbSet<Car> Cars { get; set; }
         public DbSet<AccountType> AccountTypes { get; set; }
         public DbSet<CarStatus> CarStatuses { get; set; }
+        public DbSet<DicCountries> DicCountries { get; set; }
 
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)

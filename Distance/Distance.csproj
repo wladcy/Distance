@@ -212,6 +212,7 @@
     <Compile Include="Controllers\Api\CarsController.cs" />
     <Compile Include="Controllers\Api\DriversController.cs" />
     <Compile Include="Controllers\CarsController.cs" />
+    <Compile Include="Controllers\DatabaseControler.cs" />
     <Compile Include="Controllers\DriversController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -279,6 +280,14 @@
     <Compile Include="Migrations\201806181910256_CarDatabaseDisplayNames.cs" />
     <Compile Include="Migrations\201806181910256_CarDatabaseDisplayNames.Designer.cs">
       <DependentUpon>201806181910256_CarDatabaseDisplayNames.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201807111609451_CreateDicCountriesTable.cs" />
+    <Compile Include="Migrations\201807111609451_CreateDicCountriesTable.Designer.cs">
+      <DependentUpon>201807111609451_CreateDicCountriesTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201807111728080_AddDirectPhoneNumberColumn.cs" />
+    <Compile Include="Migrations\201807111728080_AddDirectPhoneNumberColumn.Designer.cs">
+      <DependentUpon>201807111728080_AddDirectPhoneNumberColumn.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountType.cs" />
@@ -461,6 +470,7 @@
     <Content Include="Content\DataTables\images\sort_desc.png" />
     <Content Include="Content\DataTables\images\sort_desc_disabled.png" />
     <Content Include="Content\DataTables\swf\flashExport.swf" />
+    <Content Include="Content\dd.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -572,11 +582,13 @@
     <Content Include="Scripts\DataTables\responsive.jqueryui.min.js" />
     <Content Include="Scripts\DataTables\responsive.semanticui.js" />
     <Content Include="Scripts\DataTables\responsive.semanticui.min.js" />
+    <Content Include="Scripts\jquery-1.9.0.min.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
     <Content Include="Scripts\jquery-3.3.1.slim.js" />
     <Content Include="Scripts\jquery-3.3.1.slim.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.dd.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -700,6 +712,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201806181910256_CarDatabaseDisplayNames.resx">
       <DependentUpon>201806181910256_CarDatabaseDisplayNames.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201807111609451_CreateDicCountriesTable.resx">
+      <DependentUpon>201807111609451_CreateDicCountriesTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201807111728080_AddDirectPhoneNumberColumn.resx">
+      <DependentUpon>201807111728080_AddDirectPhoneNumberColumn.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
