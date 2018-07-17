@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Distance.Validators;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 
@@ -64,6 +65,7 @@ namespace Distance.Models
     {
         [Required]
         [Phone]
+        [PhoneNumberValidator]
         [Display(Name = "Numer telefonu")]
         public string Number { get; set; }
 
@@ -84,7 +86,7 @@ namespace Distance.Models
     public class VerifyPhoneNumberViewModel
     {
         [Required]
-        [Display(Name = "Code")]
+        [Display(Name = "Kod")]
         public string Code { get; set; }
 
         [Required]

@@ -58,9 +58,9 @@ namespace Distance.Controllers
                 message == ManageMessageId.ChangePasswordSuccess ? "Hasło zostało zmienione."
                 : message == ManageMessageId.SetPasswordSuccess ? "Hasło zostało utworzone."
                 : message == ManageMessageId.SetTwoFactorSuccess ? "Your two-factor authentication provider has been set."
-                : message == ManageMessageId.Error ? "An error has occurred."
-                : message == ManageMessageId.AddPhoneSuccess ? "Your phone number was added."
-                : message == ManageMessageId.RemovePhoneSuccess ? "Your phone number was removed."
+                : message == ManageMessageId.Error ? "Wystąpił błąd."
+                : message == ManageMessageId.AddPhoneSuccess ? "Numer telefonu został dodany."
+                : message == ManageMessageId.RemovePhoneSuccess ? "Numer telefonu został usunięty."
                 : "";
 
             var userId = User.Identity.GetUserId();
@@ -117,18 +117,24 @@ namespace Distance.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> AddPhoneNumber(AddPhoneNumberViewModel model)
         {
+            DatabaseControler dc = new DatabaseControler();
             if (!ModelState.IsValid)
             {
+                var list = dc.GetDirectPhoneNumbers();
+                SelectList slist = new SelectList(list, "Id", "Name", "Polska");
+                model.Countries = slist;
                 return View(model);
             }
             // Generate the token and send it
             var code = await UserManager.GenerateChangePhoneNumberTokenAsync(User.Identity.GetUserId(), model.Number);
             if (UserManager.SmsService != null)
             {
+                
+                var number = dc.GetDirectPhoneNumber(int.Parse(model.Country)) + model.Number.Replace(" ","");
                 var message = new IdentityMessage
                 {
-                    Destination = model.Number,
-                    Body = "Your security code is: " + code
+                    Destination = number,
+                    Body = "Twoj kod weryfikacyjny: " + code
                 };
                 await UserManager.SmsService.SendAsync(message);
             }
