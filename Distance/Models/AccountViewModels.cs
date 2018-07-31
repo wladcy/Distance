@@ -30,11 +30,11 @@ namespace Distance.Models
         public string Provider { get; set; }
 
         [Required]
-        [Display(Name = "Code")]
+        [Display(Name = "Kod weryfikacyjny")]
         public string Code { get; set; }
         public string ReturnUrl { get; set; }
 
-        [Display(Name = "Remember this browser?")]
+        [Display(Name = "Zapamiętać przeglądarkę?")]
         public bool RememberBrowser { get; set; }
 
         public bool RememberMe { get; set; }

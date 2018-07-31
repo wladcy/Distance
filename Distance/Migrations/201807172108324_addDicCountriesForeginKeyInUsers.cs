@@ -7,7 +7,7 @@ namespace Distance.Migrations
     {
         public override void Up()
         {
-            AddColumn("dbo.AspNetUsers", "DirectPhoneNumberId", c => c.Int(nullable: true));
+            AddColumn("dbo.AspNetUsers", "DirectPhoneNumberId", c => c.Int(nullable: false));
         }
         
         public override void Down()

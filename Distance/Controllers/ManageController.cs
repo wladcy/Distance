@@ -126,11 +126,11 @@ namespace Distance.Controllers
                 return View(model);
             }
             // Generate the token and send it
-            var code = await UserManager.GenerateChangePhoneNumberTokenAsync(User.Identity.GetUserId(), model.Number);
+            var number = dc.GetDirectPhoneNumber(int.Parse(model.Country)) + model.Number.Replace(" ", ""); 
+            var code = await UserManager.GenerateChangePhoneNumberTokenAsync(User.Identity.GetUserId(), number);
+            
             if (UserManager.SmsService != null)
             {
-                
-                var number = dc.GetDirectPhoneNumber(int.Parse(model.Country)) + model.Number.Replace(" ","");
                 var message = new IdentityMessage
                 {
                     Destination = number,
@@ -138,7 +138,7 @@ namespace Distance.Controllers
                 };
                 await UserManager.SmsService.SendAsync(message);
             }
-            return RedirectToAction("VerifyPhoneNumber", new { PhoneNumber = model.Number });
+            return RedirectToAction("VerifyPhoneNumber", new { PhoneNumber = number });
         }
 
         //
@@ -186,7 +186,7 @@ namespace Distance.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> VerifyPhoneNumber(VerifyPhoneNumberViewModel model)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || string.IsNullOrEmpty(model.PhoneNumber))
             {
                 return View(model);
             }
