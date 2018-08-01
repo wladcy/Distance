@@ -4,7 +4,16 @@
 
 <h2>@ViewBag.Title</h2>
 <div>
-    <p>
-        Dziękujemy za potwierdzenie maila. Proszę @Html.ActionLink("kliknąć", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" }), aby zalogować.
-    </p>
+    @if (Request.IsAuthenticated)
+    {
+        <p>
+            Dziękujemy za potwierdzenie maila.
+        </p>
+    }
+    else
+    {
+        <p>
+            Dziękujemy za potwierdzenie maila. Proszę @Html.ActionLink("kliknąć", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" }), aby zalogować.
+        </p>
+    }
 </div>

@@ -212,6 +212,7 @@
     <Compile Include="Controllers\Api\CarsController.cs" />
     <Compile Include="Controllers\Api\DriversController.cs" />
     <Compile Include="Controllers\CarsController.cs" />
+    <Compile Include="Controllers\CompanyController.cs" />
     <Compile Include="Controllers\DatabaseControler.cs" />
     <Compile Include="Controllers\DriversController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -305,12 +306,25 @@
     <Compile Include="Migrations\201807311113114_RemoveDicCountriesKey.Designer.cs">
       <DependentUpon>201807311113114_RemoveDicCountriesKey.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201808010931139_SetUserRoles.cs" />
+    <Compile Include="Migrations\201808010931139_SetUserRoles.Designer.cs">
+      <DependentUpon>201808010931139_SetUserRoles.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201808011036041_AddCompanyTable.cs" />
+    <Compile Include="Migrations\201808011036041_AddCompanyTable.Designer.cs">
+      <DependentUpon>201808011036041_AddCompanyTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201808011256336_wirdMigration.cs" />
+    <Compile Include="Migrations\201808011256336_wirdMigration.Designer.cs">
+      <DependentUpon>201808011256336_wirdMigration.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Models\AccountType.cs" />
+    <Compile Include="Models\AccountTypeViewModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Models\Car.cs" />
-    <Compile Include="Models\CarStatus.cs" />
-    <Compile Include="Models\Driver.cs" />
+    <Compile Include="Models\CarViewModels.cs" />
+    <Compile Include="Models\CarStatusViewModels.cs" />
+    <Compile Include="Models\CompanyViewModels.cs" />
+    <Compile Include="Models\DriverViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Validators\Min18YearsIfADriverValidator.cs" />
@@ -679,6 +693,8 @@
     <Content Include="Scripts\popper.js.map" />
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
+    <Content Include="Views\Company\Index.cshtml" />
+    <Content Include="Views\Company\UpdateCompany.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -749,6 +765,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201807311113114_RemoveDicCountriesKey.resx">
       <DependentUpon>201807311113114_RemoveDicCountriesKey.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808010931139_SetUserRoles.resx">
+      <DependentUpon>201808010931139_SetUserRoles.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808011036041_AddCompanyTable.resx">
+      <DependentUpon>201808011036041_AddCompanyTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808011256336_wirdMigration.resx">
+      <DependentUpon>201808011256336_wirdMigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

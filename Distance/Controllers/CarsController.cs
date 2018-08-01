@@ -26,7 +26,7 @@ namespace Distance.Controllers
 
         //dodawanie kierowcy z danych pobranych z widoku Drivers/New
         [HttpPost]
-        public ActionResult Create(Driver driver)
+        public ActionResult Create(DriverViewModels driver)
         {
             _context.Drivers.Add(driver);
             _context.SaveChanges();
@@ -82,7 +82,7 @@ namespace Distance.Controllers
         
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Save(Car car)
+        public ActionResult Save(CarViewModels car)
         {
             if (!ModelState.IsValid)
             {

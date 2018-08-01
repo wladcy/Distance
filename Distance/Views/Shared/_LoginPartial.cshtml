@@ -5,12 +5,15 @@
     {
     @Html.AntiForgeryToken()
 
-    <ul class="nav navbar-nav navbar-right">
-        <li>
-            @Html.ActionLink("Witaj " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Zarządzaj" })
-        </li>
-        <li><a href="javascript:document.getElementById('logoutForm').submit()">Wyloguj</a></li>
-    </ul>
+<ul class="nav navbar-nav navbar-right">
+    <li>
+        @Html.ActionLink("Witaj " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Zarządzaj" })
+    </li>
+    <li>@Html.ActionLink("Firma", "Index", "Company")</li>
+    <li>@Html.ActionLink("Kierowcy", "Index", "Drivers")</li>
+    <li>@Html.ActionLink("Samochody", "Index", "Cars")</li>
+    <li><a href="javascript:document.getElementById('logoutForm').submit()">Wyloguj</a></li>
+</ul>
     }
 }
 else

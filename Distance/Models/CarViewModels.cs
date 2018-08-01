@@ -6,7 +6,7 @@ using System.Web;
 
 namespace Distance.Models
 {
-    public class Car
+    public class CarViewModels
     {
         public int Id { get; set; } //id
 
@@ -23,7 +23,7 @@ namespace Distance.Models
         public int KmAge { get; set; } //przebieg w km
 
         
-        public CarStatus CarStatus { get; set; }
+        public CarStatusViewModels CarStatus { get; set; }
 
         [Display(Name = "Status samochodu")]
         [Required]

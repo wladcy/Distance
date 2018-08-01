@@ -57,7 +57,7 @@ namespace Distance
         public Task SendAsync(IdentityMessage message)
         {
             //port name depends on modem port
-            SerialPort sp = new SerialPort("COM3", 19200);
+            SerialPort sp = new SerialPort("COM7", 19200);
             Thread.Sleep(1000);
             sp.Open();
             Thread.Sleep(1000);

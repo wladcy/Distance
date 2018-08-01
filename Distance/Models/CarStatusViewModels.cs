@@ -6,7 +6,7 @@ using System.Web;
 
 namespace Distance.Models
 {
-    public class CarStatus
+    public class CarStatusViewModels
     {
         public byte Id { get; set; }
 

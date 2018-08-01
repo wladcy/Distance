@@ -9,10 +9,6 @@
             @Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
         </div>
         <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
-                <li>@Html.ActionLink("Kierowcy", "Index", "Drivers")</li>
-                <li>@Html.ActionLink("Samochody", "Index", "Cars")</li>
-            </ul>
             @Html.Partial("_LoginPartial")
         </div>
     </div>

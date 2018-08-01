@@ -9,7 +9,7 @@ namespace Distance.ViewModels
 {
     public class NewCarViewModel
     {
-        public IEnumerable<CarStatus> CarStatuses { get; set; }
+        public IEnumerable<CarStatusViewModels> CarStatuses { get; set; }
 
         public int? Id { get; set; } //id
     
@@ -49,7 +49,7 @@ namespace Distance.ViewModels
             Id = 0;     
         }
 
-        public NewCarViewModel(Car car)
+        public NewCarViewModel(CarViewModels car)
         {
             Id = car.Id;
             Name = car.Name;

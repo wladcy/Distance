@@ -1,0 +1,39 @@
+﻿@using Distance.Models;
+@model CompanyViewModel
+@{
+    ViewBag.Title = "Company";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 class="lead">Firma</h2>
+@if (Model.IsAdministrator)
+{
+    if (Model.IsSetCompany)
+    {
+        <p>
+            @Html.ActionLink("Aktualizuj dane", "UpdateCompany", "Company", null, new { @class = "btn btn-primary" })
+        </p>
+    }
+    else
+    {
+        <p>
+            @Html.ActionLink("Dodaj dane", "UpdateCompany", "Company", null, new { @class = "btn btn-primary" })
+        </p>
+    }
+}
+@if (Model.IsSetCompany)
+{
+    <h4>Dane firmy:</h4>
+    <dl class="dl-horizontal">
+        <dt>Nazwa:</dt>
+        <dd>@Model.CompanyName</dd>
+        <dt>Adres:</dt>
+        <dd>
+            @(Model.CompanyStreet+", "+Model.HouseNumber+"/"+Model.FlatNumber)<br />@(Model.ZipCode+" "+Model.City)
+        </dd>
+        <dt>NIP:</dt>
+        <dd>@Model.NIP</dd>
+    </dl>
+}
+
+

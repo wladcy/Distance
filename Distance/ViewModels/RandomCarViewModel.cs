@@ -8,8 +8,8 @@ namespace Distance.ViewModels
 {
     public class RandomCarViewModel
     {
-        public Car Car { get; set; }
-        public List<Driver> Drivers { get; set; }
+        public CarViewModels Car { get; set; }
+        public List<DriverViewModels> Drivers { get; set; }
 
     }
 }

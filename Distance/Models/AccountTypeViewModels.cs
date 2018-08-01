@@ -6,7 +6,7 @@ using System.Web;
 
 namespace Distance.Models
 {
-    public class AccountType
+    public class AccountTypeViewModels
     {
         public byte Id { get; set; }
 

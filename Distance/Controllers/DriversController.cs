@@ -31,7 +31,7 @@ namespace Distance.Controllers
             var accountTypes = _context.AccountTypes.ToList();
             var viewModel = new NewDriverViewModel
             {
-                Driver = new Driver(),
+                Driver = new DriverViewModels(),
                 AccountTypes = accountTypes
             };
 
@@ -41,7 +41,7 @@ namespace Distance.Controllers
         //Dodawanie kierowcy z formularza do bazy danych
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Save(Driver driver)
+        public ActionResult Save(DriverViewModels driver)
         {
             if(!ModelState.IsValid)
             {

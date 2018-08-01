@@ -11,7 +11,7 @@ namespace Distance.Validators
     {
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            var driver = (Driver)validationContext.ObjectInstance;
+            var driver = (DriverViewModels)validationContext.ObjectInstance;
 
             if (driver.AccountTypeId == 1)
                 return ValidationResult.Success;

@@ -22,7 +22,7 @@ namespace Distance.Controllers.Api
         // GET /api/drivers
         public IHttpActionResult GetDrivers()
         {
-            var driverDtos = _context.Drivers.ToList().Select(Mapper.Map<Driver, DriverDto>);
+            var driverDtos = _context.Drivers.ToList().Select(Mapper.Map<DriverViewModels, DriverDto>);
 
             return Ok(driverDtos);
         }
@@ -35,7 +35,7 @@ namespace Distance.Controllers.Api
             if (driver == null)
                 return NotFound();
 
-            return Ok(Mapper.Map<Driver, DriverDto>(driver));
+            return Ok(Mapper.Map<DriverViewModels, DriverDto>(driver));
         }
 
         // POST /api/drivers
@@ -45,7 +45,7 @@ namespace Distance.Controllers.Api
             if (!ModelState.IsValid)
                 return BadRequest();
 
-            var driver = Mapper.Map<DriverDto, Driver>(driverDto);
+            var driver = Mapper.Map<DriverDto, DriverViewModels>(driverDto);
             _context.Drivers.Add(driver);
             _context.SaveChanges();
 

@@ -7,7 +7,7 @@ using System.Web;
 
 namespace Distance.Models
 {
-    public class Driver
+    public class DriverViewModels
     {
         public int Id { get; set; }
 
@@ -28,7 +28,7 @@ namespace Distance.Models
         //konto premium
         public bool IsPremiumAccount { get; set; }
 
-        public AccountType AccountType { get; set; }
+        public AccountTypeViewModels AccountType { get; set; }
 
         [Display(Name = "Typ konta")]
         public byte AccountTypeId { get; set; } //FK dla AccountType

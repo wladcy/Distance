@@ -8,8 +8,8 @@ namespace Distance.ViewModels
 {
     public class NewDriverViewModel
     {
-        public IEnumerable<AccountType> AccountTypes { get; set; }
-        public Driver Driver { get; set; }
+        public IEnumerable<AccountTypeViewModels> AccountTypes { get; set; }
+        public DriverViewModels Driver { get; set; }
 
         public string Title
         {

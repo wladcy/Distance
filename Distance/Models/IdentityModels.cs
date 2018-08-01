@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -36,15 +37,44 @@ namespace Distance.Models
         public DateTime ModifyTime { get; set; }
     }
 
+    public class Company
+    {
+        [Key]
+        public int CompanyID { get; set; }
+
+        public string CompanyName { get; set; }
+        public string Street { get; set; }
+        public string HouseNumber { get; set; }
+        public string FlatNumber { get; set; }
+        public string ZipCode { get; set; }
+        public string City { get; set; }
+        public string NIP { get; set; }
+    }
+
+    public class UserInCompany
+    {
+        [Key, Column(Order = 0)]
+        public int CompanyId { get; set; }
+        [Key, Column(Order = 1)]
+        public string UserId { get; set; }
+
+        [ForeignKey("CompanyId")]
+        public Company CompanyID { get; set; }
+
+        [ForeignKey("UserId")]
+        public ApplicationUser User { get; set; }
+    }
+
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
 
-        public DbSet<Driver> Drivers { get; set; }
-        public DbSet<Car> Cars { get; set; }
-        public DbSet<AccountType> AccountTypes { get; set; }
-        public DbSet<CarStatus> CarStatuses { get; set; }
+        public DbSet<DriverViewModels> Drivers { get; set; }
+        public DbSet<CarViewModels> Cars { get; set; }
+        public DbSet<AccountTypeViewModels> AccountTypes { get; set; }
+        public DbSet<CarStatusViewModels> CarStatuses { get; set; }
         public DbSet<DicCountries> DicCountries { get; set; }
-
+        public DbSet<Company> Company { get; set; }
+        public DbSet<UserInCompany> UserInCompany { get; set; }
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {

@@ -40,5 +40,23 @@ namespace Distance.Controllers
             }
             return retval;
         }
+
+        public void GetCompany(ref CompanyViewModel model, string userId)
+        {
+            Company company = (from c in context.Company join u in context.UserInCompany on c.CompanyID equals u.CompanyId where u.UserId.Equals(userId) select c).FirstOrDefault();
+            if (company != null && company.CompanyID != 0)
+            {
+                model.City = company.City;
+                model.CompanyName = company.CompanyName;
+                model.CompanyStreet = company.Street;
+                model.FlatNumber = company.FlatNumber;
+                model.HouseNumber = company.HouseNumber;
+                model.IsSetCompany = true;
+                model.ZipCode = company.ZipCode;
+            }
+            else{
+                model.IsSetCompany = false;
+            }
+        }
     }
 }
