@@ -32,7 +32,7 @@
     </div>
     <div class="form-group">
         @Html.LabelFor(m => m.CarStatusId)
-        @Html.DropDownListFor(m => m.CarStatusId, new SelectList(Model.CarStatuses, "Id", "StatusName"), " ", new { @class = "form-control" })
+        @Html.DropDownListFor(m => m.CarStatusId, new SelectList(Model.CarStatuses, "Id", "Status"), " ", new { @class = "form-control" })
         @Html.ValidationMessageFor(m => m.CarStatusId)
     </div>
 

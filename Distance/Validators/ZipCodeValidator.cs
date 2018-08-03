@@ -3,23 +3,24 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 
 namespace Distance.Validators
 {
-    public class PhoneNumberValidator : ValidationAttribute
+    public class ZipCodeValidator : ValidationAttribute
     {
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             ValidationResult retval = new ValidationResult("");
-            AddPhoneNumberViewModel checkValue = (AddPhoneNumberViewModel)validationContext.ObjectInstance;
-            string phone = checkValue.Number.Replace(" ", "");
-            
-            if (phone.Length!=9)
-                retval.ErrorMessage += "Numer telefonu powinien składać się z 9 cyfr. ";
+            CompanyViewModel rvm = (CompanyViewModel)validationContext.ObjectInstance;
+            bool isCorrect = true;
+            if (rvm.ZipCode != null)
+                isCorrect = Regex.IsMatch(rvm.ZipCode, "^[0-9]{2}-[0-9]{3}$");
+            if (!isCorrect)
+                retval.ErrorMessage += "Kod pocztowy jest niepoprawny. ";
 
             return string.IsNullOrEmpty(retval.ErrorMessage) ? ValidationResult.Success : retval;
-
         }
     }
 }

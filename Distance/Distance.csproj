@@ -318,6 +318,26 @@
     <Compile Include="Migrations\201808011256336_wirdMigration.Designer.cs">
       <DependentUpon>201808011256336_wirdMigration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201808031109378_DatabaseRefactoringPart1.cs" />
+    <Compile Include="Migrations\201808031109378_DatabaseRefactoringPart1.Designer.cs">
+      <DependentUpon>201808031109378_DatabaseRefactoringPart1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201808031124588_DatabaseRefactoringPart2.cs" />
+    <Compile Include="Migrations\201808031124588_DatabaseRefactoringPart2.Designer.cs">
+      <DependentUpon>201808031124588_DatabaseRefactoringPart2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201808031137583_DatabaseRefactoringPart3.cs" />
+    <Compile Include="Migrations\201808031137583_DatabaseRefactoringPart3.Designer.cs">
+      <DependentUpon>201808031137583_DatabaseRefactoringPart3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201808031142411_DatabaseRefactoringPart4.cs" />
+    <Compile Include="Migrations\201808031142411_DatabaseRefactoringPart4.Designer.cs">
+      <DependentUpon>201808031142411_DatabaseRefactoringPart4.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201808031158286_AddCarStatuses.cs" />
+    <Compile Include="Migrations\201808031158286_AddCarStatuses.Designer.cs">
+      <DependentUpon>201808031158286_AddCarStatuses.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountTypeViewModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -327,11 +347,16 @@
     <Compile Include="Models\DriverViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Validators\CityValidator.cs" />
     <Compile Include="Validators\Min18YearsIfADriverValidator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Validators\NipValidator.cs" />
+    <Compile Include="Validators\NumberFlatValidator.cs" />
+    <Compile Include="Validators\NumberHouseValidator.cs" />
     <Compile Include="Validators\PasswordValidator.cs" />
     <Compile Include="Validators\PhoneNumberValidator.cs" />
+    <Compile Include="Validators\ZipCodeValidator.cs" />
     <Compile Include="ViewModels\NewCarViewModel.cs" />
     <Compile Include="ViewModels\NewDriverViewModel.cs" />
     <Compile Include="ViewModels\RandomCarViewModel.cs" />
@@ -774,6 +799,21 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201808011256336_wirdMigration.resx">
       <DependentUpon>201808011256336_wirdMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808031109378_DatabaseRefactoringPart1.resx">
+      <DependentUpon>201808031109378_DatabaseRefactoringPart1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808031124588_DatabaseRefactoringPart2.resx">
+      <DependentUpon>201808031124588_DatabaseRefactoringPart2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808031137583_DatabaseRefactoringPart3.resx">
+      <DependentUpon>201808031137583_DatabaseRefactoringPart3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808031142411_DatabaseRefactoringPart4.resx">
+      <DependentUpon>201808031142411_DatabaseRefactoringPart4.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808031158286_AddCarStatuses.resx">
+      <DependentUpon>201808031158286_AddCarStatuses.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

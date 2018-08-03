@@ -49,7 +49,8 @@ namespace Distance.Controllers
 
         public ActionResult Edit(int id)
         {
-            var car = _context.Cars.SingleOrDefault(c => c.Id == id);
+            DatabaseControler dc = new DatabaseControler();
+            var car = dc.GetCarById(id);
 
             if (car == null)
                 return HttpNotFound();
@@ -65,12 +66,8 @@ namespace Distance.Controllers
 
         public ActionResult Index()
         {
-            var cars = _context.Cars.Include(d => d.CarStatus).ToList();
-
-            if (cars == null)
-                return HttpNotFound();
-
-            return View(cars);
+            DatabaseControler dc = new DatabaseControler();
+            return View(dc.GetAllCars());
         }
 
         public ActionResult Details(int id)
@@ -91,23 +88,11 @@ namespace Distance.Controllers
                     CarStatuses = _context.CarStatuses.ToList()
                 };
 
-                return View("CarForm", viewModel);
+                return View("CarForm", car);
             }
 
-            if (car.Id == 0)
-                _context.Cars.Add(car);
-            else
-            {
-                var carInDb = _context.Cars.Single(c => c.Id == car.Id);
-
-                carInDb.Name = car.Name;
-                carInDb.Model = car.Model;
-                carInDb.CarPlate = car.CarPlate;
-                carInDb.KmAge = car.KmAge;
-                carInDb.CarStatusId = car.CarStatusId;
-            }
-
-            _context.SaveChanges();
+            DatabaseControler dc = new DatabaseControler();
+            dc.AddCar(car);
 
             return RedirectToAction("Index", "Cars");
         }

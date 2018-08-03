@@ -65,13 +65,41 @@ namespace Distance.Models
         public ApplicationUser User { get; set; }
     }
 
+    public class CarStatuses
+    {
+        [Key]
+        public byte Id { get; set; }
+
+        public string Status { get; set; }
+    }
+
+    public class Cars
+    {
+        [Key]
+        public int Id { get; set; } //id
+
+        
+        public string Name { get; set; } //marka auta        
+        public string Model { get; set; } //model auta       
+        public string CarPlate { get; set; } //numer rejestracji   
+        public float EngineCapacity { get; set; }
+        public int KmAge { get; set; } //przebieg w km
+        public byte CarStatusId { get; set; } //FK dla CarStatus
+
+        [ForeignKey("CarStatusId")]
+        public CarStatuses CarStatus { get; set; }
+
+        
+        
+    }
+
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
 
         public DbSet<DriverViewModels> Drivers { get; set; }
-        public DbSet<CarViewModels> Cars { get; set; }
+        public DbSet<Cars> Cars { get; set; }
         public DbSet<AccountTypeViewModels> AccountTypes { get; set; }
-        public DbSet<CarStatusViewModels> CarStatuses { get; set; }
+        public DbSet<CarStatuses> CarStatuses { get; set; }
         public DbSet<DicCountries> DicCountries { get; set; }
         public DbSet<Company> Company { get; set; }
         public DbSet<UserInCompany> UserInCompany { get; set; }

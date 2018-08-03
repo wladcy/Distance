@@ -22,7 +22,7 @@ namespace Distance.Controllers.Api
         // GET /api/cars
         public IEnumerable<CarDto> GetCars()
         {
-            return _context.Cars.ToList().Select(Mapper.Map<CarViewModels, CarDto>);
+            return _context.Cars.ToList().Select(Mapper.Map<Cars, CarDto>);
         }
 
         // GET /api/cars/1
@@ -33,7 +33,7 @@ namespace Distance.Controllers.Api
             if (car == null)
                 return NotFound();
 
-            return Ok(Mapper.Map<CarViewModels, CarDto>(car));
+            return Ok(Mapper.Map<Cars, CarDto>(car));
         }
 
         // POST /api/cars
@@ -43,7 +43,7 @@ namespace Distance.Controllers.Api
             if (!ModelState.IsValid)
                 return BadRequest();
 
-            var car = Mapper.Map<CarDto, CarViewModels>(carDto);
+            var car = Mapper.Map<CarDto, Cars>(carDto);
             _context.Cars.Add(car);
             _context.SaveChanges();
 

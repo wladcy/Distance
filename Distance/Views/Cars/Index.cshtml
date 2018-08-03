@@ -8,18 +8,18 @@
 <h2>Dostępne samochody</h2>
 
 <p>
-    @Html.ActionLink("DODAJ SAMOCHOD", "New", "Cars", null, new { @class = "btn btn-primary" })
+    @Html.ActionLink("Dodaj Samochód", "New", "Cars", null, new { @class = "btn btn-primary" })
 </p>
 
 <table id="cars" class="table-bordered table-hover">
     <thead>
         <tr>
-            <th>MARKA</th>
-            <th>MODEL</th>
-            <th>REJESTRACJA</th>
-            <th>PRZEBIEG W KM</th>
-            <th>DOSTĘPNOŚC</th>
-            <th>USUŃ</th>
+            <th>Marka</th>
+            <th>Model</th>
+            <th>Rejestracja</th>
+            <th>Aktualny przebieg</th>
+            <th>Status</th>
+            <th>Akcje</th>
         </tr>
     </thead>
     <tbody>
@@ -30,9 +30,9 @@
                 <td>@car.Model</td>
                 <td>@car.CarPlate</td>
                 <td>@car.KmAge</td>
-                <td>@car.CarStatus.StatusName</td>
+                <td>@car.CarStatus.Status</td>
                 <td>
-                    <button data-car-id="@car.Id" class="btn-link js-delete">USUŃ</button>
+                    <button data-car-id="@car.Id" class="btn-link js-delete">Usuń</button>
                 </td>
             </tr>
         }
@@ -42,9 +42,10 @@
 @section scripts
 {
     <script>
+        bootbox.alert("Hello world!");
         $(document).ready(function () {
             $("#cars").DataTable();
-
+            bootbox.alert("Hello world!");
             $("#cars").on("click", ".js-delete", function () {
                 var button = $(this);
 

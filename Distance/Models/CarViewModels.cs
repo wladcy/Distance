@@ -23,7 +23,7 @@ namespace Distance.Models
         public int KmAge { get; set; } //przebieg w km
 
         
-        public CarStatusViewModels CarStatus { get; set; }
+        public CarStatuses CarStatus { get; set; }
 
         [Display(Name = "Status samochodu")]
         [Required]

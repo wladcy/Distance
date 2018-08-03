@@ -14,8 +14,10 @@ namespace Distance.Controllers
     {
         //GET: /Company/Index
         [HttpGet]
-        public ActionResult Index()
+        public ActionResult Index(CompanytMessageId? message)
         {
+            ViewBag.StatusMessage =
+                message == CompanytMessageId.UpdateCompanySuccess ? "Dane firmy zostały zapisane w bazie." : "";
             var userName = User.Identity.Name;
             ApplicationUserManager userManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
             var user = userManager.FindByName(userName);            
@@ -50,7 +52,17 @@ namespace Distance.Controllers
             {
                 return View(model);
             }
-            return View();
+            var userName = User.Identity.Name;
+            ApplicationUserManager userManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            var user = userManager.FindByName(userName);
+            DatabaseControler dc = new DatabaseControler();
+            dc.UpdateCompany(model, user.Id);
+            return RedirectToAction("Index", "Company", new { Message = CompanytMessageId.UpdateCompanySuccess });
         }
+    }
+
+    public enum CompanytMessageId
+    {
+        UpdateCompanySuccess
     }
 }
