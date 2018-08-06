@@ -10,6 +10,7 @@ using Distance.Models;
 
 namespace Distance.Controllers.Api
 {
+    [Authorize]
     public class CarsController : ApiController
     {
         private ApplicationDbContext _context;
@@ -74,6 +75,9 @@ namespace Distance.Controllers.Api
         [HttpDelete]
         public IHttpActionResult DeleteCar(int id)
         {
+            Controllers.CarsController uc = new Controllers.CarsController();
+            if (!uc.IsAdministrator())
+                return NotFound();
             var carInDb = _context.Cars.SingleOrDefault(c => c.Id == id);
 
             if (carInDb == null)

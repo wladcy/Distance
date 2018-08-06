@@ -7,14 +7,14 @@ using System.Web;
 
 namespace Distance.Models
 {
-    public class CompanyViewModel
+    public class CompanyViewModel:IAddressViewModel
     {
         [Required]
         [Display(Name = "Nazwa firmy")]
         public string CompanyName { get; set; }
 
         [Display(Name = "Ulica")]
-        public string CompanyStreet { get; set; }
+        public string Street { get; set; }
 
         [Required]
         [NumberHouseValidator]

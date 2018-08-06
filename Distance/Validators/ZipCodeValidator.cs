@@ -13,7 +13,7 @@ namespace Distance.Validators
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             ValidationResult retval = new ValidationResult("");
-            CompanyViewModel rvm = (CompanyViewModel)validationContext.ObjectInstance;
+            IAddressViewModel rvm = (IAddressViewModel)validationContext.ObjectInstance;
             bool isCorrect = true;
             if (rvm.ZipCode != null)
                 isCorrect = Regex.IsMatch(rvm.ZipCode, "^[0-9]{2}-[0-9]{3}$");

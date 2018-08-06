@@ -6,6 +6,8 @@ using System.Web.Mvc;
 using Distance.Models;
 using Distance.ViewModels;
 using System.Data.Entity;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 
 namespace Distance.Controllers
 {
@@ -37,11 +39,15 @@ namespace Distance.Controllers
 
         public ActionResult New()
         {
+            if (!IsAdministrator())
+            {
+                return RedirectToAction("Index", "Cars");
+            }
             var carStatuses = _context.CarStatuses.ToList();
 
-            var viewModel = new NewCarViewModel
+            var viewModel = new CarViewModels
             {
-                CarStatuses = carStatuses
+                CarStatus = carStatuses
             };
 
             return View("CarForm", viewModel);
@@ -49,25 +55,33 @@ namespace Distance.Controllers
 
         public ActionResult Edit(int id)
         {
+            if (!IsAdministrator())
+            {
+                return RedirectToAction("Index", "Cars");
+            }
             DatabaseControler dc = new DatabaseControler();
             var car = dc.GetCarById(id);
 
             if (car == null)
                 return HttpNotFound();
 
-            var viewModel = new NewCarViewModel(car)
-            {
-                CarStatuses = _context.CarStatuses.ToList()
-            };
+            car.CarStatus = _context.CarStatuses.ToList();            
 
-            return View("CarForm", viewModel);
+            return View("CarForm", car);
         } 
    
 
         public ActionResult Index()
         {
+            CarsViewModel model = new CarsViewModel();
+            model.IsAdministrator = IsAdministrator();
             DatabaseControler dc = new DatabaseControler();
-            return View(dc.GetAllCars());
+            var userName = User.Identity.Name;
+            ApplicationUserManager userManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            var user = userManager.FindByName(userName);
+            model.IsSetCompany = dc.IsSetCompany(user.Id);
+            model.CarList = dc.GetAllCars(user);
+            return View(model);
         }
 
         public ActionResult Details(int id)
@@ -83,18 +97,30 @@ namespace Distance.Controllers
         {
             if (!ModelState.IsValid)
             {
-                var viewModel = new NewCarViewModel(car)
-                {
-                    CarStatuses = _context.CarStatuses.ToList()
-                };
-
+                car.CarStatus = _context.CarStatuses.ToList();
                 return View("CarForm", car);
             }
 
             DatabaseControler dc = new DatabaseControler();
-            dc.AddCar(car);
+            var userName = User.Identity.Name;
+            ApplicationUserManager userManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            var user = userManager.FindByName(userName);
+            dc.AddCar(car, user);
 
             return RedirectToAction("Index", "Cars");
+        }
+
+        public bool IsAdministrator()
+        {
+            bool retval = false;
+            var userName = User.Identity.Name;
+            ApplicationUserManager userManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            var user = userManager.FindByName(userName);
+            if (userManager.GetRoles(user.Id).Contains("ADMINISTRATOR"))
+            {
+                retval = true;
+            }
+            return retval;
         }
     }
 }

@@ -156,6 +156,18 @@ namespace Distance.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    user.City = model.City;
+                    user.FirstName = model.FirstName;
+                    user.FlatNumber = model.FlatNumber;
+                    user.HouseNumber = model.HouseNumber;
+                    user.LastName = model.LastName;
+                    user.Street = model.Street;
+                    user.ZipCode = model.ZipCode;
+                    user.UserName = model.FirstName + " " + model.LastName;
+                    user.CreateTime = DateTime.Now;
+                    user.ModyfiTime = DateTime.Now;
+                    DatabaseControler dc = new DatabaseControler();
+                    dc.UpdateUserData(user);
                     var currentUser = UserManager.FindByName(user.UserName);
                     var role = UserManager.AddToRole(currentUser.Id, "Administrator".ToUpper());
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);

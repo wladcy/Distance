@@ -63,7 +63,7 @@ namespace Distance.Models
         public bool RememberMe { get; set; }
     }
 
-    public class RegisterViewModel : IPasswordViewModels
+    public class RegisterViewModel : IPasswordViewModels, IAddressViewModel, IPersonalDataViewModels
     {
         [Required]
         [EmailAddress]
@@ -81,6 +81,39 @@ namespace Distance.Models
         [Display(Name = "Powtórz hasło")]
         [Compare("Password", ErrorMessage = "Podane hasła nie pasują do siebie.")]
         public string ConfirmPassword { get; set; }
+
+        [DataType(DataType.Text)]
+        [Required]
+        [FirstNameValidator]
+        [Display(Name = "Imie")]
+        public string FirstName { get; set; }
+
+        [Required]
+        [LastNameValidator]
+        [Display(Name = "Nazwisko")]
+        public string LastName { get; set; }
+
+        [Display(Name = "Ulica")]
+        public string Street { get; set; }
+
+        [Required]
+        [NumberHouseValidator]
+        [Display(Name = "Numer domu")]
+        public string HouseNumber { get; set; }
+
+        [NumberFlatValidator]
+        [Display(Name = "Numer mieszkania")]
+        public string FlatNumber { get; set; }
+
+        [Required]
+        [ZipCodeValidator]
+        [Display(Name = "Kod pocztowy")]
+        public string ZipCode { get; set; }
+
+        [Required]
+        [CityValidator]
+        [Display(Name = "Miejscowość")]
+        public string City { get; set; }
     }
 
     public class ResetPasswordViewModel : IPasswordViewModels
@@ -111,10 +144,25 @@ namespace Distance.Models
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }
-    }    
+    }
 
     public interface IPasswordViewModels
     {
         string Password { get; set; }
+    }
+
+    public interface IPersonalDataViewModels
+    {
+        string FirstName { get; set; }
+        string LastName { get; set; }        
+    }
+
+    public interface IAddressViewModel
+    {
+        string Street { get; set; }
+        string HouseNumber { get; set; }
+        string FlatNumber { get; set; }
+        string ZipCode { get; set; }
+        string City { get; set; }
     }
 }

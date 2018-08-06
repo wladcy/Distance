@@ -30,17 +30,17 @@
         <dd>@Model.CompanyName</dd>
         <dt>Adres:</dt>
         <dd>
-            @if (!string.IsNullOrEmpty(Model.FlatNumber) && !string.IsNullOrEmpty(Model.CompanyStreet))
+            @if (!string.IsNullOrEmpty(Model.FlatNumber) && !string.IsNullOrEmpty(Model.Street))
             {
-                @(Model.CompanyStreet + " " + Model.HouseNumber + "/" + Model.FlatNumber)<br />@(Model.ZipCode + " " + Model.City)
+                @(Model.Street + " " + Model.HouseNumber + "/" + Model.FlatNumber)<br />@(Model.ZipCode + " " + Model.City)
             }
             else if (!string.IsNullOrEmpty(Model.FlatNumber))
             {
                 @(Model.HouseNumber + "/" + Model.FlatNumber)<br />@(Model.ZipCode + " " + Model.City)
             }
-            else if (!string.IsNullOrEmpty(Model.CompanyStreet))
+            else if (!string.IsNullOrEmpty(Model.Street))
             {
-                @(Model.CompanyStreet + " " + Model.HouseNumber)<br />@(Model.ZipCode + " " + Model.City)
+                @(Model.Street + " " + Model.HouseNumber)<br />@(Model.ZipCode + " " + Model.City)
             }
             else
             {

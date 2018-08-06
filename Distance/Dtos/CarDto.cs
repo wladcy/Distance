@@ -19,6 +19,8 @@ namespace Distance.Dtos
 
         public int KmAge { get; set; } //przebieg w km
 
+        public float EngineCapacity { get; set; }
+
         [Required]
         public byte CarStatusId { get; set; } //FK dla CarStatus
     }

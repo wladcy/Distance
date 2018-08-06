@@ -12,7 +12,7 @@ namespace Distance.Validators
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             ValidationResult retval = new ValidationResult("");
-            CompanyViewModel rvm = (CompanyViewModel)validationContext.ObjectInstance;
+            IAddressViewModel rvm = (IAddressViewModel)validationContext.ObjectInstance;
             bool isCorrect = true;
             if (rvm.City != null)
                 foreach (char c in rvm.City)

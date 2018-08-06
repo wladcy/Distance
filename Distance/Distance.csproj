@@ -81,8 +81,17 @@
     <Reference Include="Microsoft.ApplicationInsights, Version=2.6.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.ApplicationInsights.2.6.4\lib\net46\Microsoft.ApplicationInsights.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.AspNet.TelemetryCorrelation, Version=1.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.TelemetryCorrelation.1.0.1\lib\net45\Microsoft.AspNet.TelemetryCorrelation.dll</HintPath>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.2\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.2\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Owin, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Owin.2.2.2\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.TelemetryCorrelation, Version=1.0.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.TelemetryCorrelation.1.0.3\lib\net45\Microsoft.AspNet.TelemetryCorrelation.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
@@ -120,8 +129,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Diagnostics.DiagnosticSource, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Diagnostics.DiagnosticSource.4.4.0\lib\net46\System.Diagnostics.DiagnosticSource.dll</HintPath>
+    <Reference Include="System.Diagnostics.DiagnosticSource, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Diagnostics.DiagnosticSource.4.5.0\lib\net46\System.Diagnostics.DiagnosticSource.dll</HintPath>
     </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Net.Http.Formatting, Version=5.2.6.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -186,15 +195,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.AspNet.Identity.Core">
-      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.AspNet.Identity.Owin">
-      <HintPath>..\packages\Microsoft.AspNet.Identity.Owin.2.2.1\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.AspNet.Identity.EntityFramework">
-      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.1\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
-    </Reference>
     <Reference Include="Owin">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
@@ -338,9 +338,30 @@
     <Compile Include="Migrations\201808031158286_AddCarStatuses.Designer.cs">
       <DependentUpon>201808031158286_AddCarStatuses.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201808061158526_AddTraveltableAndChangeUserTableAndAddDatetimeColumn.cs" />
+    <Compile Include="Migrations\201808061158526_AddTraveltableAndChangeUserTableAndAddDatetimeColumn.Designer.cs">
+      <DependentUpon>201808061158526_AddTraveltableAndChangeUserTableAndAddDatetimeColumn.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201808061201401_AddTravelTable.cs" />
+    <Compile Include="Migrations\201808061201401_AddTravelTable.Designer.cs">
+      <DependentUpon>201808061201401_AddTravelTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201808061328098_AddDateTimeColumnsToUserTable.cs" />
+    <Compile Include="Migrations\201808061328098_AddDateTimeColumnsToUserTable.Designer.cs">
+      <DependentUpon>201808061328098_AddDateTimeColumnsToUserTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201808061334179_UpdateDateTimeColumnsToUserTable.cs" />
+    <Compile Include="Migrations\201808061334179_UpdateDateTimeColumnsToUserTable.Designer.cs">
+      <DependentUpon>201808061334179_UpdateDateTimeColumnsToUserTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201808061347241_AddConnectionCarsWithCompany.cs" />
+    <Compile Include="Migrations\201808061347241_AddConnectionCarsWithCompany.Designer.cs">
+      <DependentUpon>201808061347241_AddConnectionCarsWithCompany.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountTypeViewModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\CarsViewModel.cs" />
     <Compile Include="Models\CarViewModels.cs" />
     <Compile Include="Models\CarStatusViewModels.cs" />
     <Compile Include="Models\CompanyViewModels.cs" />
@@ -348,6 +369,8 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Validators\CityValidator.cs" />
+    <Compile Include="Validators\FirstNameValidator.cs" />
+    <Compile Include="Validators\LastNameValidator.cs" />
     <Compile Include="Validators\Min18YearsIfADriverValidator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -357,7 +380,6 @@
     <Compile Include="Validators\PasswordValidator.cs" />
     <Compile Include="Validators\PhoneNumberValidator.cs" />
     <Compile Include="Validators\ZipCodeValidator.cs" />
-    <Compile Include="ViewModels\NewCarViewModel.cs" />
     <Compile Include="ViewModels\NewDriverViewModel.cs" />
     <Compile Include="ViewModels\RandomCarViewModel.cs" />
   </ItemGroup>
@@ -532,16 +554,16 @@
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\bootbox.js" />
     <Content Include="Scripts\bootbox.min.js" />
-    <Content Include="Scripts\bootstrap.bundle.js" />
-    <Content Include="Scripts\bootstrap.bundle.min.js" />
-    <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\DataTables\css\semanticui.scss" />
     <Content Include="Content\DataTables\css\mixins.scss" />
     <Content Include="Content\DataTables\css\common.scss" />
+    <Content Include="Scripts\bootstrap.bundle.js" />
+    <Content Include="Scripts\bootstrap.bundle.min.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\esm\popper-utils.js" />
     <Content Include="Scripts\esm\popper-utils.min.js" />
     <Content Include="Scripts\esm\popper.js" />
@@ -709,6 +731,8 @@
     <Content Include="Views\Cars\CarForm.cshtml" />
     <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.3.1.min.map" />
+    <Content Include="Views\Company\Index.cshtml" />
+    <Content Include="Views\Company\UpdateCompany.cshtml" />
     <Content Include="Scripts\umd\popper.min.js.map" />
     <Content Include="Scripts\umd\popper.js.map" />
     <Content Include="Scripts\umd\popper-utils.min.js.map" />
@@ -718,8 +742,6 @@
     <Content Include="Scripts\popper.js.map" />
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
-    <Content Include="Views\Company\Index.cshtml" />
-    <Content Include="Views\Company\UpdateCompany.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -815,12 +837,27 @@
     <EmbeddedResource Include="Migrations\201808031158286_AddCarStatuses.resx">
       <DependentUpon>201808031158286_AddCarStatuses.cs</DependentUpon>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <TypeScriptCompile Include="Scripts\index.d.ts" />
+    <EmbeddedResource Include="Migrations\201808061158526_AddTraveltableAndChangeUserTableAndAddDatetimeColumn.resx">
+      <DependentUpon>201808061158526_AddTraveltableAndChangeUserTableAndAddDatetimeColumn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808061201401_AddTravelTable.resx">
+      <DependentUpon>201808061201401_AddTravelTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808061328098_AddDateTimeColumnsToUserTable.resx">
+      <DependentUpon>201808061328098_AddDateTimeColumnsToUserTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808061334179_UpdateDateTimeColumnsToUserTable.resx">
+      <DependentUpon>201808061334179_UpdateDateTimeColumnsToUserTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808061347241_AddConnectionCarsWithCompany.resx">
+      <DependentUpon>201808061347241_AddConnectionCarsWithCompany.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="Scripts\index.d.ts" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

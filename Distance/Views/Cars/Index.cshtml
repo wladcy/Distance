@@ -1,68 +1,101 @@
-﻿@model IEnumerable<Distance.Models.CarViewModels>
+﻿@using Distance.Models
+@model CarsViewModel
 
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@if (!Model.IsSetCompany)
+{
+    <p>Przed dodaniem pojazdów uzupełnij dane firmy!!!</p>
+}
+else
+{
+    <h2>Dostępne samochody</h2>
+    if (Model.IsAdministrator)
+    {
+        <p>
+            @Html.ActionLink("Dodaj Samochód", "New", "Cars", null, new { @class = "btn btn-primary" })
+        </p>
+    }
 
-<h2>Dostępne samochody</h2>
-
-<p>
-    @Html.ActionLink("Dodaj Samochód", "New", "Cars", null, new { @class = "btn btn-primary" })
-</p>
-
-<table id="cars" class="table-bordered table-hover">
-    <thead>
-        <tr>
-            <th>Marka</th>
-            <th>Model</th>
-            <th>Rejestracja</th>
-            <th>Aktualny przebieg</th>
-            <th>Status</th>
-            <th>Akcje</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var car in Model)
-        {
+    <table id="cars" class="table-bordered table-hover">
+        <thead>
             <tr>
-                <td>@Html.ActionLink(car.Name, "Edit", "Cars", new { id = car.Id }, null)</td>
-                <td>@car.Model</td>
-                <td>@car.CarPlate</td>
-                <td>@car.KmAge</td>
-                <td>@car.CarStatus.Status</td>
-                <td>
-                    <button data-car-id="@car.Id" class="btn-link js-delete">Usuń</button>
-                </td>
+                <th>Marka</th>
+                <th>Model</th>
+                <th>Rejestracja</th>
+                <th>Aktualny przebieg</th>
+                <th>Pojemność silnika</th>
+                <th>Status</th>
+                <th>Akcje</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var car in Model.CarList)
+            {
+                <tr>
+                    <td>@car.Name</td>
+                    <td>@car.Model</td>
+                    <td>@car.CarPlate</td>
+                    <td>@car.KmAge</td>
+                    <td>@car.EngineCapacity</td>
+                    <td>@car.CarStatus.First().Status</td>
+                    <td>
+                        @if (Model.IsAdministrator)
+                        {
+                            <button data-car-id="@car.Id" class="btn-link js-delete">Usuń</button>
+                            <button data-car-id="@car.Id" class="btn-link" id="Edit">Edytuj</button>
+                        }
+                        <button data-car-id="@car.Id" class="btn-link">Wybierz</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
 
 @section scripts
 {
     <script>
-        bootbox.alert("Hello world!");
         $(document).ready(function () {
-            $("#cars").DataTable();
-            bootbox.alert("Hello world!");
+            $("#cars").DataTable({
+                "language": {
+                    "lengthMenu": "Pokazuj _MENU_ na stronie",
+                    "zeroRecords": "Nic nie znaleziono",
+                    "info": "Wyswietla stronę _PAGE_ z _PAGES_",
+                    "infoEmpty": "Brak danych",
+                    "infoFiltered": "(Wyszukane z _MAX_ wszystkich rekordów)",
+                    "search": "Wyszukaj:",
+                    "paginate": {
+                        "first": "Pierwsza",
+                        "last": "Ostatnia",
+                        "next": "Następna",
+                        "previous": "Wcześniejsza"
+                    }
+                }
+            });
             $("#cars").on("click", ".js-delete", function () {
                 var button = $(this);
 
-                bootbox.confirm("Czy napewno chcesz usunąć tego kierowcę?",
-                    function(result) {
-                        if (result) {
-                            $.ajax({
-                                url: "/api/cars/" + button.attr("data-car-id"),
-                                method: "DELETE",
-                                success: function() {
-                                    button.parents("tr").remove();
-                                }
-                            });
+                result = confirm("Czy napewno chcesz usunąć ten samochód?");
+                if (result) {
+                    $.ajax({
+                        url: "/api/cars/" + button.attr("data-car-id"),
+                        method: "DELETE",
+                        success: function () {
+                            console.log("dupa");
+                            button.parents("tr").remove();
                         }
                     });
+                }
+            });
+            $("#Edit").on("click", function () {
+                var url = "/Cars/Edit/" + $(this).attr("data-car-id");
+                window.location.href = url;
             });
         });
+
     </script>
 }
 

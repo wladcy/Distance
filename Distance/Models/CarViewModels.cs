@@ -22,11 +22,34 @@ namespace Distance.Models
         [Display(Name = "Przebieg")]
         public int KmAge { get; set; } //przebieg w km
 
+        [Display(Name ="Pojemność silnika")]
+        public float EngineCapacity { get; set; }
         
-        public CarStatuses CarStatus { get; set; }
+        public IEnumerable<CarStatuses> CarStatus { get; set; }
 
         [Display(Name = "Status samochodu")]
         [Required]
         public byte CarStatusId { get; set; } //FK dla CarStatus
+
+        public string Title
+        {
+            get
+            {
+                if (Id != 0)
+                    return "Edytuj samochód";
+
+                return "Dodaj nowy Samochód";
+            }
+        }
+
+        public string Button
+        {
+            get
+            {
+                if (Id != 0)
+                    return "Edytuj";
+                return "Dodaj";
+            }
+        }
     }
 }

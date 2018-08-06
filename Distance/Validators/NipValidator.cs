@@ -11,6 +11,7 @@ namespace Distance.Validators
     {
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
+            //TODO unique values
             ValidationResult retval = new ValidationResult("");
             CompanyViewModel rvm = (CompanyViewModel)validationContext.ObjectInstance;
             bool isCorrect = true;

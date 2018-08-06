@@ -1,8 +1,10 @@
-﻿@model Distance.ViewModels.NewCarViewModel
+﻿@model Distance.Models.CarViewModels
 
 @{
-    ViewBag.Title = "CarForm";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+                /**/
+
+                ViewBag.Title = "Edycja bazy samochodów";
+                Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>@Model.Title</h2>
@@ -31,15 +33,20 @@
         @Html.ValidationMessageFor(m => m.KmAge)
     </div>
     <div class="form-group">
+        @Html.LabelFor(m => m.EngineCapacity)
+        @Html.TextBoxFor(m => m.EngineCapacity, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.EngineCapacity)
+    </div>
+    <div class="form-group">
         @Html.LabelFor(m => m.CarStatusId)
-        @Html.DropDownListFor(m => m.CarStatusId, new SelectList(Model.CarStatuses, "Id", "Status"), " ", new { @class = "form-control" })
+        @Html.DropDownListFor(m => m.CarStatusId, new SelectList(Model.CarStatus, "Id", "Status"), " ", new { @class = "form-control" })
         @Html.ValidationMessageFor(m => m.CarStatusId)
     </div>
 
 
     @Html.HiddenFor(m => m.Id)
     @Html.AntiForgeryToken()
-    <button type="submit" class="btn btn-primary">DODAJ</button>
+    <button type="submit" class="btn btn-primary">@Model.Button</button>
 }
 
 @section scripts
