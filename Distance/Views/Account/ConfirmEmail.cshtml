@@ -1,19 +1,21 @@
 ﻿@{
     ViewBag.Title = "Email potwierdzony";
 }
+<body style="background-color:#2F3336; color:white;">
+    <h2 style="color:white;">@ViewBag.Title</h2>
+    <div>
+        @if (Request.IsAuthenticated)
+        {
+            <p>
+                Dziękujemy za potwierdzenie maila.
+            </p>
+        }
+        else
+        {
+            <p>
+                Dziękujemy za potwierdzenie maila. Proszę @Html.ActionLink("kliknąć", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" }), aby zalogować.
+            </p>
+        }
+    </div>
+</body>
 
-<h2>@ViewBag.Title</h2>
-<div>
-    @if (Request.IsAuthenticated)
-    {
-        <p>
-            Dziękujemy za potwierdzenie maila.
-        </p>
-    }
-    else
-    {
-        <p>
-            Dziękujemy za potwierdzenie maila. Proszę @Html.ActionLink("kliknąć", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" }), aby zalogować.
-        </p>
-    }
-</div>

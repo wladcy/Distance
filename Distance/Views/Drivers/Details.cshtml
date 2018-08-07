@@ -5,15 +5,16 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>@Model.Name @Model.Surname</h2>
-
-<ul>
-    <li>Account Type: @Model.AccountType.Name</li>
-    @if(Model.Birthdate.HasValue)
-    {
-        <li>Birthdate: @Model.Birthdate.Value.ToShortDateString()</li>
-    }
-</ul>
+<body style="background-color:#2F3336; color:white;">
+    <h2 style="color:white;">@Model.Name @Model.Surname</h2>
+    <ul>
+        <li>Account Type: @Model.AccountType.Name</li>
+        @if (Model.Birthdate.HasValue)
+        {
+            <li>Birthdate: @Model.Birthdate.Value.ToShortDateString()</li>
+        }
+    </ul>
+</body>
    
 
 
