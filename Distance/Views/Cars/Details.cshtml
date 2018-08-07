@@ -5,12 +5,12 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Szczegóły wybranego Auta</h2>
-
-<ul>
-    <li>@Model.Name @Model.Model</li>
-    <li>REJESTRACJA: @Model.CarPlate</li>
-    <li>PRZEBIEG: @Model.KmAge</li>
-    <li>STATUS: @Model.CarStatus.StatusName</li>
-
-</ul>
+<body style="background-color:#2F3336; color:white;">
+    <h2>Szczegóły wybranego Auta</h2>
+    <ul>
+        <li>@Model.Name @Model.Model</li>
+        <li>REJESTRACJA: @Model.CarPlate</li>
+        <li>PRZEBIEG: @Model.KmAge</li>
+        <li>STATUS: @Model.CarStatus.StatusName</li>
+    </ul>
+</body>

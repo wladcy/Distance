@@ -3,25 +3,25 @@
     ViewBag.Title = "Random";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<body style="background-color:#2F3336; color:white;">
 
-@{ 
-    var className = Model.Drivers.Count > 0 ? "popular" : null;
-}
+    @{
+        var className = Model.Drivers.Count > 0 ? "popular" : null;
+    }
+    <h2 class="@className">@Model.Car.Name</h2>
 
-<h2 class="@className">@Model.Car.Name</h2>
-
-
-@if (Model.Drivers.Count == 0)
-{
-    <p>Brak kierowcy</p>
-}
-else
-{
-    <ul>
-        @foreach (var driver in Model.Drivers)
-        {
-            <li>@driver.Name</li>
-        }
-    </ul>
-}
+    @if (Model.Drivers.Count == 0)
+    {
+        <p>Brak kierowcy</p>
+    }
+    else
+    {
+        <ul>
+            @foreach (var driver in Model.Drivers)
+            {
+                <li>@driver.Name</li>
+            }
+        </ul>
+    }
+</body>
 
