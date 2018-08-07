@@ -6,7 +6,7 @@
 }
 
 <body style="background-color:#2F3336; color:white;">
-    <h2 class="lead">Firma</h2>
+    <h2 style="color:white;" class="lead">Firma</h2>
     <p class="text-success">@ViewBag.StatusMessage</p>
     @if (Model.IsAdministrator)
     {
@@ -25,7 +25,7 @@
     }
     @if (Model.IsSetCompany)
     {
-        <h4>Dane firmy:</h4>
+        <h4 style="color:white;">Dane firmy:</h4>
         <dl class="dl-horizontal">
             <dt>Nazwa:</dt>
             <dd>@Model.CompanyName</dd>

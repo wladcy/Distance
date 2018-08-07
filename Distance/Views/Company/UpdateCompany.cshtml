@@ -5,14 +5,14 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <body style="background-color:#2F3336; color:white;">
-    <h2 class="page-header">@ViewBag.Title</h2>
+    <h2 style="color:white;" class="page-header">@ViewBag.Title</h2>
     <div class="row">
         <div class="col-md-8">
             <section id="loginForm">
                 @using (Html.BeginForm("UpdateCompany", "Company", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
                 {
                     @Html.AntiForgeryToken()
-                    <h4>Uzupełnij formularz danymi firmy.</h4>
+                    <h4 style="color:white;">Uzupełnij formularz danymi firmy.</h4>
                     <hr />
                     @Html.ValidationSummary("", new { @class = "text-danger" })
                     <div class="form-group">
