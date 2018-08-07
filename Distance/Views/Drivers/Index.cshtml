@@ -5,42 +5,43 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Kierowcy w firmie</h2>
-
-<p>
-    @Html.ActionLink("DODAJ KIEROWCE", "New", "Drivers", null, new { @class = "btn btn-primary" })
-</p>
-
-@if(!Model.Any())
-{
-    <p>Obecnie nie ma kierowców</p>
-}
-else
-{
-    <table id="drivers" class="table-bordered table-hover">
-        <thead>
-            <tr>
-                <th>KIEROWCA</th>
-                <th>ZNIŻKA</th>
-                <th>TYP KONTA</th>
-                <th>USUŃ</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach(var driver in Model)
-            {
+<body style="background-color:#2F3336; color:white;">
+    <h2>Kierowcy w firmie</h2>
+    <p>
+        @Html.ActionLink("DODAJ KIEROWCE", "New", "Drivers", null, new { @class = "btn btn-primary" })
+    </p>
+    @if (!Model.Any())
+    {
+        <p>Obecnie nie ma kierowców</p>
+    }
+    else
+    {
+        <table id="drivers" class="table-bordered table-hover">
+            <thead>
                 <tr>
-                    <td>@Html.ActionLink(driver.Name +" " +driver.Surname, "Edit", "Drivers", new { id = driver.Id }, null )</td>
-                    <td>@driver.AccountType.DiscountRate</td>
-                    <td>@driver.AccountType.Name</td>
-                    <td>
-                        <button data-driver-id="@driver.Id" class="btn-link js-delete">USUŃ</button>
-                    </td>
+                    <th>KIEROWCA</th>
+                    <th>ZNIŻKA</th>
+                    <th>TYP KONTA</th>
+                    <th>USUŃ</th>
                 </tr>
-            }
-        </tbody>
-    </table>
-}
+            </thead>
+            <tbody>
+                @foreach (var driver in Model)
+                {
+                    <tr>
+                        <td>@Html.ActionLink(driver.Name + " " + driver.Surname, "Edit", "Drivers", new { id = driver.Id }, null)</td>
+                        <td>@driver.AccountType.DiscountRate</td>
+                        <td>@driver.AccountType.Name</td>
+                        <td>
+                            <button data-driver-id="@driver.Id" class="btn-link js-delete">USUŃ</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</body>
+
 
 @section scripts
 {
