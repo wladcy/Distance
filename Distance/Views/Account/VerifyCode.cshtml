@@ -4,14 +4,14 @@
 }
 
 <body>
-    <h2>@ViewBag.Title</h2>
+    <h2 style="color:white;">@ViewBag.Title</h2>
 
     @using (Html.BeginForm("VerifyCode", "Account", new { ReturnUrl = Model.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
     {
         @Html.AntiForgeryToken()
         @Html.Hidden("provider", @Model.Provider)
         @Html.Hidden("rememberMe", @Model.RememberMe)
-        <h4>Podaj kod weryfikacyjny</h4>
+        <h4 style="color:white;">Podaj kod weryfikacyjny</h4>
         <hr />
         @Html.ValidationSummary("", new { @class = "text-danger" })
         <div class="form-group">

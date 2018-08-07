@@ -4,13 +4,13 @@
 }
 
 <body style="background-color:#2F3336; color:white;">
-    <h2>@ViewBag.Title.</h2>
-    <h3>Połączenie Twojego konta @ViewBag.LoginProvider.</h3>
+    <h2 style="color:white;">@ViewBag.Title.</h2>
+    <h3 style="color:white;">Połączenie Twojego konta @ViewBag.LoginProvider.</h3>
     @using (Html.BeginForm("ExternalLoginConfirmation", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
     {
         @Html.AntiForgeryToken()
 
-        <h4>Formularz połączenia</h4>
+        <h4 style="color:white;">Formularz połączenia</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <p class="text-info">
