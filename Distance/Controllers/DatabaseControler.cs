@@ -211,7 +211,10 @@ namespace Distance.Controllers
                 travel.To = model.To;
                 travel.ModyfiTime = DateTime.Now;
                 travel.TravelDate = DateTime.Now;
-                travel.Car.CarStatusId = getCarStatusId("Dostępny");
+                Cars car = GetCarDatabaseModelById(model.CarId);
+                car.KmAge = int.Parse(model.StopKm);
+                car.CarStatusId = getCarStatusId("Dostępny");
+                travel.Car = car;
                 context.Entry(travel).State = EntityState.Modified;
             }
             else
@@ -228,7 +231,8 @@ namespace Distance.Controllers
                 travel.To = model.To;
                 travel.TravelDate = DateTime.Now;
                 travel.UserId = user.Id;
-                Cars car = getCarById(model.CarId);
+                Cars car = GetCarDatabaseModelById(model.CarId);
+                car.KmAge = int.Parse(model.StartKm);
                 car.CarStatusId = getCarStatusId("W trasie");
                 travel.Car = car;
                 context.Entry(travel).State = EntityState.Added;
@@ -236,10 +240,51 @@ namespace Distance.Controllers
             context.SaveChanges();
         }
 
+        public bool IsCarInDatabase(string registrationNumber)
+        {
+            bool retval = false;
+            Cars car = context.Cars.Where(c => c.CarPlate.Equals(registrationNumber)).FirstOrDefault();
+            if (car != null && car.Id != 0)
+                retval = true;
+            return retval;
+        }
+
+        public TravelViewModels GetCurrentTravel(ApplicationUser user, int carId)
+        {
+            int companyId = getCompanyIdByUser(user);
+            Travel travel = context.Travel.Where(t => t.Car.Id == carId && t.Car.Company.CompanyID == companyId && t.User.Id.Equals(user.Id) && t.Car.CarStatus.Status.Equals("W trasie")).FirstOrDefault();
+            TravelViewModels tvm = new TravelViewModels();
+            if (travel != null && travel.Id != 0)
+            {
+                tvm.From = travel.From;
+                tvm.Notes = travel.Notes;
+                tvm.Purpose = travel.Purpose;
+                tvm.StartKm = travel.CarMileageStart.ToString();
+                tvm.StopKm = travel.CarMileageStop.ToString();
+                tvm.To = travel.To;
+            }
+            return tvm;
+        }
+
+        public Cars GetCarDatabaseModelById(int id)
+        {
+            Cars car = context.Cars.Where(c => c.Id == id).FirstOrDefault();
+            return car;
+        }
+
+        public bool IsInTravel(int carId)
+        {
+            bool retval = false;
+            Cars car = context.Cars.Where(c => c.CarStatus.Status.Equals("W trasie") && c.Id == carId).FirstOrDefault();
+            if (car != null && car.Id != 0)
+                retval = true;
+            return retval;
+        }
+
         private bool inTravelWithCurrentUser(int carId, string userId)
         {
             bool retval = false;
-            Travel travel = context.Travel.Where(t => t.CarId == carId && t.UserId.Equals(userId)&&t.Car.CarStatus.Status.Equals("W trasie")).FirstOrDefault();
+            Travel travel = context.Travel.Where(t => t.CarId == carId && t.UserId.Equals(userId) && t.Car.CarStatus.Status.Equals("W trasie")).FirstOrDefault();
             if (travel != null && travel.Id != 0)
                 retval = true;
             return retval;
@@ -249,12 +294,6 @@ namespace Distance.Controllers
         {
             CarStatuses car = context.CarStatuses.Where(c => c.Status.Equals(statusName)).FirstOrDefault();
             return car.Id;
-        }
-
-        private Cars getCarById(int id)
-        {
-            Cars car = context.Cars.Where(c => c.Id == id).FirstOrDefault();
-            return car;
         }
 
         private int getCompanyIdByUser(ApplicationUser user)

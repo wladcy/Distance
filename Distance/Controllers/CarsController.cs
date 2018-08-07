@@ -54,21 +54,23 @@ namespace Distance.Controllers
 
         public ActionResult Edit(int id)
         {
-            if (!IsAdministrator())
+            DatabaseControler dc = new DatabaseControler();
+            if (!IsAdministrator() || dc.IsInTravel(id))
             {
                 return RedirectToAction("Index", "Cars");
             }
-            DatabaseControler dc = new DatabaseControler();
+
             var car = dc.GetCarById(id);
 
             if (car == null)
                 return HttpNotFound();
 
-            car.CarStatus = _context.CarStatuses.ToList();            
+            car.CarStatus = _context.CarStatuses.ToList();
+            car.IsEditMode = true;
 
             return View("CarForm", car);
-        } 
-   
+        }
+
 
         public ActionResult Index()
         {
@@ -89,7 +91,7 @@ namespace Distance.Controllers
 
             return View(car);
         }
-        
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Save(CarViewModels car)

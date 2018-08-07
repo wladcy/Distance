@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Distance.Validators;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -16,6 +17,7 @@ namespace Distance.Models
         [Display(Name = "Model")]
         public string Model { get; set; } //model auta
 
+        [RegistrationNumberValidator]
         [Display(Name = "Rejestracja")]
         public string CarPlate { get; set; } //numer rejestracji
 
@@ -53,5 +55,6 @@ namespace Distance.Models
         }
 
         public bool InTravelWithCurrentUser { get; set; }
+        public bool IsEditMode { get; set; }
     }
 }

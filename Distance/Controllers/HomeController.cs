@@ -11,8 +11,9 @@ namespace Distance.Controllers
         public ActionResult Index(AccountMessageId? message)
         {
             ViewBag.StatusMessage =
-                message == AccountMessageId.RegisterAccountSuccess ? "Konto zostało utworzone. Na maila dostałeś instrukcję pełnej aktywacji." 
-                :message==AccountMessageId.StartTravelSuccess? "Rozpocząłeś nową podróż służbową" : "";
+                message == AccountMessageId.RegisterAccountSuccess ? "Konto zostało utworzone. Na maila dostałeś instrukcję pełnej aktywacji."
+                : message == AccountMessageId.StartTravelSuccess ? "Rozpocząłeś nową podróż służbową"
+                : message == AccountMessageId.StopTravelSuccess ? "Zakończyłeś podróż służbową" : "";
             return View();
         }
 
@@ -34,6 +35,7 @@ namespace Distance.Controllers
     public enum AccountMessageId
     {
         RegisterAccountSuccess,
-        StartTravelSuccess
+        StartTravelSuccess,
+        StopTravelSuccess
     }
 }

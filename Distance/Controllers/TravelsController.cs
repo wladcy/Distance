@@ -10,7 +10,7 @@ using System.Web.Mvc;
 namespace Distance.Controllers
 {
     [Authorize]
-    public class TravelsController: Controller
+    public class TravelsController : Controller
     {
         public ActionResult StartTravel(string id)
         {
@@ -18,17 +18,19 @@ namespace Distance.Controllers
             tvm.Button = "Start";
             tvm.Title = "Rozpocznij podróż";
             int Id = 0;
-            if(!int.TryParse(id,out Id))
+            DatabaseControler dc = new DatabaseControler();
+            if (!int.TryParse(id, out Id) || dc.IsInTravel(Id))
             {
                 return RedirectToAction("Index", "Home");
             }
             tvm.CarId = Id;
             tvm.StopKm = "0";
-            return View("TravelsForm",tvm);
+            tvm.StartTravel = true;
+            return View("TravelsForm", tvm);
         }
 
         [HttpPost]
-        public ActionResult StartTravel(TravelViewModels model)
+        public ActionResult UpdateTravel(TravelViewModels model)
         {
             if (!ModelState.IsValid)
             {
@@ -39,20 +41,32 @@ namespace Distance.Controllers
             ApplicationUserManager userManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
             var user = userManager.FindByName(userName);
             dc.UpdateTravel(model, user);
-            return RedirectToAction("Index", "Home", new { Message = AccountMessageId.StartTravelSuccess });
+            if (model.StartTravel)
+            {
+                return RedirectToAction("Index", "Home", new { Message = AccountMessageId.StartTravelSuccess });
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home", new { Message = AccountMessageId.StopTravelSuccess });
+            }
         }
 
         public ActionResult StopTravel(string id)
         {
-            TravelViewModels tvm = new TravelViewModels();
-            tvm.Button = "Stop";
-            tvm.Title = "Zakończ podróż";
+            DatabaseControler dc = new DatabaseControler();
+            var userName = User.Identity.Name;
+            ApplicationUserManager userManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            var user = userManager.FindByName(userName);
             int Id = 0;
             if (!int.TryParse(id, out Id))
             {
                 return RedirectToAction("Index", "Home");
             }
+            TravelViewModels tvm = dc.GetCurrentTravel(user, Id);
+            tvm.Button = "Stop";
+            tvm.Title = "Zakończ podróż";
             tvm.CarId = Id;
+            tvm.StopKm = string.Empty;
             return View("TravelsForm", tvm);
         }
     }

@@ -383,6 +383,7 @@
     <Compile Include="Validators\PasswordValidator.cs" />
     <Compile Include="Validators\PhoneNumberValidator.cs" />
     <Compile Include="Validators\PurposeValidator.cs" />
+    <Compile Include="Validators\RegistrationNumberValidator.cs" />
     <Compile Include="Validators\StartKmValidator.cs" />
     <Compile Include="Validators\StopKmValidator.cs" />
     <Compile Include="Validators\ToValidator.cs" />

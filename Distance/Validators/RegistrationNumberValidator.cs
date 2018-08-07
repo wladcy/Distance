@@ -8,29 +8,30 @@ using System.Web;
 
 namespace Distance.Validators
 {
-    public class StartKmValidator : ValidationAttribute
+    public class RegistrationNumberValidator:ValidationAttribute
     {
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             ValidationResult retval = new ValidationResult("");
-            TravelViewModels rvm = (TravelViewModels)validationContext.ObjectInstance;
+            CarViewModels rvm = (CarViewModels)validationContext.ObjectInstance;
             bool isCorrect = true;
-            if (rvm.StartKm != null)
-                foreach (char c in rvm.StartKm)
+            if (rvm.CarPlate != null)
+                foreach (char c in rvm.CarPlate)
                 {
-                    if (!char.IsDigit(c))
+                    if (!char.IsLetterOrDigit(c))
                     {
                         isCorrect = false;
                         break;
                     }
 
+
                 }
             DatabaseControler dc = new DatabaseControler();
-            Cars car = dc.GetCarDatabaseModelById(rvm.CarId);
+
             if (!isCorrect)
-                retval.ErrorMessage += "Przebieg jest liczbą. ";
-            if(rvm.StartKm!=null && isCorrect && int.Parse(rvm.StartKm)<car.KmAge)
-                retval.ErrorMessage += "Przebieg przed podróżą nie może być mniejszy niż aktualny przebieg pojazdu. Aktualny przebieg to: "+car.KmAge+" km. ";
+                retval.ErrorMessage += "Numer rejestracyjny składa się z liter i cyfr. ";
+            if (!rvm.IsEditMode && dc.IsCarInDatabase(rvm.CarPlate))
+                retval.ErrorMessage += "Podany numer rejestracyjny jest zarejestrowany w naszej bazie. ";
 
             return string.IsNullOrEmpty(retval.ErrorMessage) ? ValidationResult.Success : retval;
         }

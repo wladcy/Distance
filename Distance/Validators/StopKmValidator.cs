@@ -7,7 +7,7 @@ using System.Web;
 
 namespace Distance.Validators
 {
-    public class StopKmValidator:ValidationAttribute
+    public class StopKmValidator : ValidationAttribute
     {
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
@@ -22,12 +22,20 @@ namespace Distance.Validators
                         isCorrect = false;
                         break;
                     }
-                    
-                }
-            
-            if (!isCorrect)
-                retval.ErrorMessage += "Przebieg jest liczbą. ";            
 
+                }
+
+            if (!isCorrect)
+                retval.ErrorMessage += "Przebieg jest liczbą. ";
+            else if (rvm.StopKm != null)
+            {
+                int start = 0;
+                int stop = int.Parse(rvm.StopKm);
+                if (!rvm.StartTravel && int.TryParse(rvm.StartKm, out start) && start >= stop)
+                {
+                    retval.ErrorMessage += "Przebieg przed podróżą nie może być większy lub równy od przebiegu po podróży. ";
+                }
+            }
             return string.IsNullOrEmpty(retval.ErrorMessage) ? ValidationResult.Success : retval;
         }
     }
