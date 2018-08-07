@@ -51,5 +51,7 @@ namespace Distance.Models
                 return "Dodaj";
             }
         }
+
+        public bool InTravelWithCurrentUser { get; set; }
     }
 }

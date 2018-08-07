@@ -1,0 +1,87 @@
+﻿@model Distance.Models.TravelViewModels
+@{
+    ViewBag.Title = Model.Title;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@Model.Title</h2>
+@if (Model.StartTravel)
+{
+    using (Html.BeginForm("StartTravel", "travels"))
+    {
+        @Html.ValidationSummary()
+        <div class="form-group">
+            @Html.LabelFor(m => m.StartKm)
+            @Html.TextBoxFor(m => m.StartKm, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.StartKm)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Purpose)
+            @Html.TextBoxFor(m => m.Purpose, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Purpose)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.From)
+            @Html.TextBoxFor(m => m.From, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.From)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.To)
+            @Html.TextBoxFor(m => m.To, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.To)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Notes)
+            @Html.TextAreaFor(m => m.Notes, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Notes)
+        </div>
+        @Html.HiddenFor(m => m.CarId)
+        @Html.HiddenFor(m => m.Title)
+        @Html.HiddenFor(m => m.Button)
+        @Html.HiddenFor(m => m.StopKm)
+        @Html.HiddenFor(m => m.StartTravel)
+        @Html.AntiForgeryToken()
+        <button type="submit" class="btn btn-primary">@Model.Button</button>
+    }
+}
+else
+{
+    using (Html.BeginForm("StopTravel", "travels"))
+    {
+        @Html.ValidationSummary()
+        <div class="form-group">
+            @Html.LabelFor(m => m.StartKm)
+            @Html.TextBoxFor(m => m.StartKm, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.StartKm)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Purpose)
+            @Html.TextBoxFor(m => m.Purpose, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Purpose)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.From)
+            @Html.TextBoxFor(m => m.From, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.From)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.To)
+            @Html.TextBoxFor(m => m.To, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.To)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Notes)
+            @Html.TextAreaFor(m => m.Notes, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Notes)
+        </div>
+        @Html.HiddenFor(m => m.CarId)
+        @Html.HiddenFor(m => m.Title)
+        @Html.HiddenFor(m => m.Button)
+        @Html.HiddenFor(m => m.StopKm)
+        @Html.HiddenFor(m => m.StartTravel)
+        @Html.HiddenFor(m => m.StartKm)
+        @Html.AntiForgeryToken()
+        <button type="submit" class="btn btn-primary">@Model.Button</button>
+    }
+}
+

@@ -217,6 +217,7 @@
     <Compile Include="Controllers\DriversController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\TravelsController.cs" />
     <Compile Include="Dtos\CarDto.cs" />
     <Compile Include="Dtos\DriverDto.cs" />
     <Compile Include="Global.asax.cs">
@@ -368,8 +369,10 @@
     <Compile Include="Models\DriverViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\TravelViewModels.cs" />
     <Compile Include="Validators\CityValidator.cs" />
     <Compile Include="Validators\FirstNameValidator.cs" />
+    <Compile Include="Validators\FromValidator.cs" />
     <Compile Include="Validators\LastNameValidator.cs" />
     <Compile Include="Validators\Min18YearsIfADriverValidator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -379,6 +382,10 @@
     <Compile Include="Validators\NumberHouseValidator.cs" />
     <Compile Include="Validators\PasswordValidator.cs" />
     <Compile Include="Validators\PhoneNumberValidator.cs" />
+    <Compile Include="Validators\PurposeValidator.cs" />
+    <Compile Include="Validators\StartKmValidator.cs" />
+    <Compile Include="Validators\StopKmValidator.cs" />
+    <Compile Include="Validators\ToValidator.cs" />
     <Compile Include="Validators\ZipCodeValidator.cs" />
     <Compile Include="ViewModels\NewDriverViewModel.cs" />
     <Compile Include="ViewModels\RandomCarViewModel.cs" />
@@ -742,6 +749,7 @@
     <Content Include="Scripts\popper.js.map" />
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
+    <Content Include="Views\Travels\TravelsForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

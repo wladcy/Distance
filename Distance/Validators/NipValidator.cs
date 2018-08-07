@@ -1,4 +1,5 @@
-﻿using Distance.Models;
+﻿using Distance.Controllers;
+using Distance.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -11,7 +12,6 @@ namespace Distance.Validators
     {
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            //TODO unique values
             ValidationResult retval = new ValidationResult("");
             CompanyViewModel rvm = (CompanyViewModel)validationContext.ObjectInstance;
             bool isCorrect = true;
@@ -29,7 +29,9 @@ namespace Distance.Validators
                         digit++;
                     }
                 }
-
+            DatabaseControler dc = new DatabaseControler();
+            if (dc.IsNIPInDatabase(rvm.NIP))
+                retval.ErrorMessage += "Firma o podanym numerze NIP istnieje w naszej bazie. ";
             if (!isCorrect)
                 retval.ErrorMessage += "Numer NIP składa się wyłącznie z cyfr. ";
             if (digit != 10)

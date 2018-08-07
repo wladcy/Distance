@@ -42,12 +42,23 @@ else
                     <td>@car.EngineCapacity</td>
                     <td>@car.CarStatus.First().Status</td>
                     <td>
-                        @if (Model.IsAdministrator)
+                        @if (car.CarStatus.First().Status.Equals("Dostępny"))
                         {
-                            <button data-car-id="@car.Id" class="btn-link js-delete">Usuń</button>
-                            <button data-car-id="@car.Id" class="btn-link" id="Edit">Edytuj</button>
+                            if (Model.IsAdministrator)
+                            {
+                                <button data-car-id="@car.Id" class="btn-link js-delete">Usuń</button>
+                                <button data-car-id="@car.Id" class="btn-link" id="Edit">Edytuj</button>
+                            }
+                            <button data-car-id="@car.Id" class="btn-link" id="Choose">Wybierz</button>
                         }
-                        <button data-car-id="@car.Id" class="btn-link">Wybierz</button>
+                        else if (car.InTravelWithCurrentUser)
+                        {
+                            <button data-car-id="@car.Id" class="btn-link" id="Stop">Zakończ podróż</button>
+                        }
+                        else
+                        {
+                            @("Brak dostępnych akcji")
+                        }
                     </td>
                 </tr>
             }
@@ -92,6 +103,16 @@ else
             });
             $("#Edit").on("click", function () {
                 var url = "/Cars/Edit/" + $(this).attr("data-car-id");
+                window.location.href = url;
+            });
+
+            $("#Choose").on("click", function () {
+                var url = "/Travels/StartTravel/" + $(this).attr("data-car-id");
+                window.location.href = url;
+            });
+
+            $("#Stop").on("click", function () {
+                var url = "/Travels/StopTravel/" + $(this).attr("data-car-id");
                 window.location.href = url;
             });
         });

@@ -153,7 +153,7 @@ namespace Distance.Controllers
         {
             List<CarViewModels> retval = new List<CarViewModels>();
             int companyId = getCompanyIdByUser(user);
-            var list = context.Cars.Include(d => d.CarStatus).Where(d=>d.CompanyId==companyId).ToList();
+            var list = context.Cars.Include(d => d.CarStatus).Where(d => d.CompanyId == companyId).ToList();
             foreach (var item in list)
             {
                 CarViewModels cvm = new CarViewModels();
@@ -167,6 +167,7 @@ namespace Distance.Controllers
                 cvm.EngineCapacity = item.EngineCapacity;
                 cvm.Model = item.Model;
                 cvm.Name = item.Name;
+                cvm.InTravelWithCurrentUser = inTravelWithCurrentUser(item.Id, user.Id);
                 retval.Add(cvm);
             }
             return retval;
@@ -190,9 +191,77 @@ namespace Distance.Controllers
             context.SaveChanges();
         }
 
+        public bool IsNIPInDatabase(string nip)
+        {
+            bool retval = false;
+            Company company = context.Company.Where(c => c.NIP.Equals(nip)).FirstOrDefault();
+            if (company != null && company.CompanyID != 0)
+                retval = true;
+            return retval;
+        }
+
+        public void UpdateTravel(TravelViewModels model, ApplicationUser user)
+        {
+            int companyId = getCompanyIdByUser(user);
+            Travel travel = context.Travel.Where(t => t.Car.Id == model.CarId && t.Car.Company.CompanyID == companyId && t.User.Id.Equals(user.Id) && t.Car.CarStatus.Status.Equals("W trasie")).FirstOrDefault();
+            if (travel != null && travel.Id != 0)
+            {
+                travel.CarMileageStop = int.Parse(model.StopKm);
+                travel.Notes = model.Notes;
+                travel.To = model.To;
+                travel.ModyfiTime = DateTime.Now;
+                travel.TravelDate = DateTime.Now;
+                travel.Car.CarStatusId = getCarStatusId("Dostępny");
+                context.Entry(travel).State = EntityState.Modified;
+            }
+            else
+            {
+                travel = new Travel();
+                travel.CarId = model.CarId;
+                travel.CarMileageStart = int.Parse(model.StartKm);
+                travel.CarMileageStop = int.Parse(model.StopKm);
+                travel.CreateTime = DateTime.Now;
+                travel.From = model.From;
+                travel.ModyfiTime = DateTime.Now;
+                travel.Notes = model.Notes;
+                travel.Purpose = model.Purpose;
+                travel.To = model.To;
+                travel.TravelDate = DateTime.Now;
+                travel.UserId = user.Id;
+                Cars car = getCarById(model.CarId);
+                car.CarStatusId = getCarStatusId("W trasie");
+                travel.Car = car;
+                context.Entry(travel).State = EntityState.Added;
+            }
+            context.SaveChanges();
+        }
+
+        private bool inTravelWithCurrentUser(int carId, string userId)
+        {
+            bool retval = false;
+            Travel travel = context.Travel.Where(t => t.CarId == carId && t.UserId.Equals(userId)&&t.Car.CarStatus.Status.Equals("W trasie")).FirstOrDefault();
+            if (travel != null && travel.Id != 0)
+                retval = true;
+            return retval;
+        }
+
+        private byte getCarStatusId(string statusName)
+        {
+            CarStatuses car = context.CarStatuses.Where(c => c.Status.Equals(statusName)).FirstOrDefault();
+            return car.Id;
+        }
+
+        private Cars getCarById(int id)
+        {
+            Cars car = context.Cars.Where(c => c.Id == id).FirstOrDefault();
+            return car;
+        }
+
         private int getCompanyIdByUser(ApplicationUser user)
         {
             UserInCompany company = context.UserInCompany.Where(u => u.User.Id.Equals(user.Id)).FirstOrDefault();
+            if (company == null)
+                return 0;
             return company.CompanyId;
         }
 
