@@ -1,24 +1,26 @@
-﻿@using Microsoft.AspNet.Identity
-@if (Request.IsAuthenticated)
-{
-    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+﻿<body>
+    @using Microsoft.AspNet.Identity
+    @if (Request.IsAuthenticated)
     {
-    @Html.AntiForgeryToken()
+        using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+        {
+            @Html.AntiForgeryToken()
 
-<ul class="nav navbar-nav navbar-right">
-    <li>
-        @Html.ActionLink("Witaj " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Zarządzaj" })
-    </li>
-    <li>@Html.ActionLink("Firma", "Index", "Company")</li>
-    <li>@Html.ActionLink("Kierowcy", "Index", "Drivers")</li>
-    <li>@Html.ActionLink("Samochody", "Index", "Cars")</li>
-    <li><a href="javascript:document.getElementById('logoutForm').submit()">Wyloguj</a></li>
-</ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    @Html.ActionLink("Witaj " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Zarządzaj" })
+                </li>
+                <li>@Html.ActionLink("Firma", "Index", "Company")</li>
+                <li>@Html.ActionLink("Kierowcy", "Index", "Drivers")</li>
+                <li>@Html.ActionLink("Samochody", "Index", "Cars")</li>
+                <li><a href="javascript:document.getElementById('logoutForm').submit()">Wyloguj</a></li>
+            </ul>
+        }
     }
-}
-else
-{
-    <ul class="nav navbar-nav navbar-right">        
-        <li>@Html.ActionLink("Zaloguj", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
-    </ul>
-}
+    else
+    {
+        <ul class="nav navbar-nav navbar-right">
+            <li>@Html.ActionLink("Zaloguj", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+        </ul>
+    }
+</body>
