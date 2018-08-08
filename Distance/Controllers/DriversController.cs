@@ -5,7 +5,8 @@ using System.Web;
 using System.Web.Mvc;
 using Distance.Models;
 using System.Data.Entity;
-using Distance.ViewModels;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.AspNet.Identity;
 
 namespace Distance.Controllers
 {
@@ -28,12 +29,8 @@ namespace Distance.Controllers
         //Dodanie nowego kierowcy
         public ActionResult New()
         {
-            var accountTypes = _context.AccountTypes.ToList();
-            var viewModel = new NewDriverViewModel
-            {
-                Driver = new DriverViewModels(),
-                AccountTypes = accountTypes
-            };
+            var viewModel = new DriverViewModels();
+            
 
             return View("DriverForm", viewModel);
         }
@@ -41,33 +38,31 @@ namespace Distance.Controllers
         //Dodawanie kierowcy z formularza do bazy danych
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Save(DriverViewModels driver)
+        public ActionResult Save(ApplicationUser driver)
         {
             if(!ModelState.IsValid)
             {
-                var viewModel = new NewDriverViewModel
-                {
-                    Driver = driver,
-                    AccountTypes = _context.AccountTypes.ToList()
-                };
+                var viewModel = new DriverViewModels();                
 
                 return View("DriverForm", viewModel);
             }
 
-            if (driver.Id == 0)
-                _context.Drivers.Add(driver);
-            else
-            {
-                var driverInDb = _context.Drivers.Single(d => d.Id == driver.Id);
+            //TODO ADD USER
 
-                driverInDb.Name = driver.Name;
-                driverInDb.Surname = driver.Surname;
-                driverInDb.Birthdate = driver.Birthdate;
-                driverInDb.IsPremiumAccount = driver.IsPremiumAccount;
-                driverInDb.AccountTypeId = driver.AccountTypeId;
-            }
+            //if (driver.Id == 0)
+            //    _context.Users.Add(driver);
+            //else
+            //{
+            //    var driverInDb = _context.Drivers.Single(d => d.Id == driver.Id);
 
-            _context.SaveChanges();
+            //    driverInDb.Name = driver.Name;
+            //    driverInDb.Surname = driver.Surname;
+            //    driverInDb.Birthdate = driver.Birthdate;
+            //    driverInDb.IsPremiumAccount = driver.IsPremiumAccount;
+            //    driverInDb.AccountTypeId = driver.AccountTypeId;
+            //}
+
+            //_context.SaveChanges();
 
             return RedirectToAction("Index", "Drivers");
         }
@@ -75,7 +70,11 @@ namespace Distance.Controllers
         // GET: Drivers cała lista kierowców
         public ActionResult Index()
         {
-            var drivers = _context.Drivers.Include(d => d.AccountType).ToList(); 
+            DatabaseControler dc = new DatabaseControler();
+            var userName = User.Identity.Name;
+            ApplicationUserManager userManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            var user = userManager.FindByName(userName);
+            var drivers = dc.GetAllUsers(user);
             
             return View(drivers);
         }
@@ -83,7 +82,7 @@ namespace Distance.Controllers
         //szczegóły kierowcow
         public ActionResult Details(int id)
         {
-            var driver = _context.Drivers.Include(d => d.AccountType).SingleOrDefault(d => d.Id == id);
+            var driver = _context.Users.SingleOrDefault(d => d.Id.Equals(id));
 
             if (driver == null) //jesli nie ma kierowcy o danym id wywal 404
                 return HttpNotFound();
@@ -92,19 +91,23 @@ namespace Distance.Controllers
         }
       
         //Edytowanie kierowcy
-        public ActionResult Edit(int id)
+        public ActionResult Edit(string id)
         {
-            var driver = _context.Drivers.SingleOrDefault(d => d.Id == id);
+            var driver = _context.Users.SingleOrDefault(d => d.Id.Equals(id));
 
             if (driver == null)
                 return HttpNotFound();
 
-            var viewModel = new NewDriverViewModel
-            {
-                Driver = driver,
-                AccountTypes = _context.AccountTypes.ToList()
-            };
+            var viewModel = new DriverViewModels();
+            
             return View("DriverForm", viewModel);
+        }
+
+        public static string GetUserNameById(string Id)
+        {
+            DatabaseControler dc = new DatabaseControler();
+            ApplicationUser user = dc.GetUserById(Id);
+            return user.FirstName + " " + user.LastName;
         }
     }
 }

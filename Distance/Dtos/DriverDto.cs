@@ -9,22 +9,20 @@ namespace Distance.Dtos
 {
     public class DriverDto
     {
-        public int Id { get; set; }
+        public string FirstName { get; set; }
 
-        [Required]
-        [StringLength(20)]
-        public string Name { get; set; } //imie
+        public string LastName { get; set; }
 
-        [Required]
-        [StringLength(30)]
-        public string Surname { get; set; } //nazwisko
+        public string Street { get; set; }
 
-        //[Min18YearsIfADriver]
-        public DateTime? Birthdate { get; set; } //data urodzenia
+        public string HouseNumber { get; set; }
 
-        //konto premium
-        public bool IsPremiumAccount { get; set; }
+        public string FlatNumber { get; set; }
 
-        public byte AccountTypeId { get; set; } //FK dla AccountType
+        public string ZipCode { get; set; }
+
+        public string City { get; set; }
+
+        public string Id { get; set; }
     }
 }

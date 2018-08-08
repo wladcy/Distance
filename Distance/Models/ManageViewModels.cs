@@ -6,7 +6,7 @@ using Microsoft.Owin.Security;
 
 namespace Distance.Models
 {
-    public class IndexViewModel
+    public class IndexViewModel :DriverViewModels
     {
         public bool HasPassword { get; set; }
         public IList<UserLoginInfo> Logins { get; set; }

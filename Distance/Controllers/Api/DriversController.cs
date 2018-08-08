@@ -22,20 +22,20 @@ namespace Distance.Controllers.Api
         // GET /api/drivers
         public IHttpActionResult GetDrivers()
         {
-            var driverDtos = _context.Drivers.ToList().Select(Mapper.Map<DriverViewModels, DriverDto>);
+            var driverDtos = _context.Users.ToList().Select(Mapper.Map<ApplicationUser, DriverDto>);
 
             return Ok(driverDtos);
         }
 
         // GET /api/drivers/1
-        public IHttpActionResult GetDriver(int id)
+        public IHttpActionResult GetDriver(string id)
         {
-            var driver = _context.Drivers.SingleOrDefault(c => c.Id == id);
+            var driver = _context.Users.SingleOrDefault(c => c.Id.Equals(id));
 
             if (driver == null)
                 return NotFound();
 
-            return Ok(Mapper.Map<DriverViewModels, DriverDto>(driver));
+            return Ok(Mapper.Map<ApplicationUser, DriverDto>(driver));
         }
 
         // POST /api/drivers
@@ -45,8 +45,8 @@ namespace Distance.Controllers.Api
             if (!ModelState.IsValid)
                 return BadRequest();
 
-            var driver = Mapper.Map<DriverDto, DriverViewModels>(driverDto);
-            _context.Drivers.Add(driver);
+            var driver = Mapper.Map<DriverDto, ApplicationUser>(driverDto);
+            _context.Users.Add(driver);
             _context.SaveChanges();
 
             driverDto.Id = driver.Id;
@@ -56,12 +56,12 @@ namespace Distance.Controllers.Api
 
         // PUT /api/drivers/1
         [HttpPut]
-        public IHttpActionResult UpdateDriver(int id, DriverDto driverDto)
+        public IHttpActionResult UpdateDriver(string id, DriverDto driverDto)
         {
             if (!ModelState.IsValid)
                 return BadRequest();
 
-            var driverInDb = _context.Drivers.SingleOrDefault(c => c.Id == id);
+            var driverInDb = _context.Users.SingleOrDefault(c => c.Id.Equals(id));
 
             if (driverInDb == null)
                 return NotFound();
@@ -74,14 +74,14 @@ namespace Distance.Controllers.Api
 
         // DELETE /api/drivers/1
         [HttpDelete]
-        public IHttpActionResult DeleteDriver(int id)
+        public IHttpActionResult DeleteDriver(string id)
         {
-            var driverInDb = _context.Drivers.SingleOrDefault(c => c.Id == id);
+            var driverInDb = _context.Users.SingleOrDefault(c => c.Id.Equals(id));
 
             if (driverInDb == null)
                 return NotFound();
 
-            _context.Drivers.Remove(driverInDb);
+            _context.Users.Remove(driverInDb);
             _context.SaveChanges();
 
             return Ok();

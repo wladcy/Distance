@@ -163,7 +163,6 @@ namespace Distance.Controllers
                     user.LastName = model.LastName;
                     user.Street = model.Street;
                     user.ZipCode = model.ZipCode;
-                    user.UserName = model.FirstName + " " + model.LastName;
                     user.CreateTime = DateTime.Now;
                     user.ModyfiTime = DateTime.Now;
                     DatabaseControler dc = new DatabaseControler();

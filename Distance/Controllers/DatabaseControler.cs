@@ -123,7 +123,7 @@ namespace Distance.Controllers
                 car.CarPlate = model.CarPlate;
                 car.KmAge = model.KmAge;
                 car.EngineCapacity = model.EngineCapacity;
-                car.CarStatusId = model.CarStatusId;
+                car.CarStatusId = getCarStatusId("Dostępny");
                 car.CompanyId = getCompanyIdByUser(user);
                 car.CreateTime = DateTime.Now;
                 car.ModyfiTime = DateTime.Now;
@@ -278,6 +278,42 @@ namespace Distance.Controllers
             Cars car = context.Cars.Where(c => c.CarStatus.Status.Equals("W trasie") && c.Id == carId).FirstOrDefault();
             if (car != null && car.Id != 0)
                 retval = true;
+            return retval;
+        }
+
+        public IEnumerable<DriverViewModels> GetAllUsers(ApplicationUser user)
+        {
+            List<DriverViewModels> retval = new List<DriverViewModels>();
+            int companyId = getCompanyIdByUser(user);
+            var list = context.UserInCompany.Include(u => u.User).Where(u => u.CompanyId == companyId).ToList();
+            foreach(var item in list)
+            {
+                DriverViewModels dvm = new DriverViewModels();
+                dvm.City = item.User.City;
+                dvm.FirstName = item.User.FirstName;
+                dvm.FlatNumber = item.User.FlatNumber;
+                dvm.HouseNumber = item.User.HouseNumber;
+                dvm.Id = item.User.Id;
+                dvm.LastName = item.User.LastName;
+                dvm.Street = item.User.Street;
+                dvm.ZipCode = item.User.ZipCode;
+                retval.Add(dvm);
+            }
+            return retval;
+        }
+
+        public bool IsMailInDatabase(string mail)
+        {
+            bool retval = false;
+            ApplicationUser user = context.Users.Where(u => u.Email.Equals(mail)).FirstOrDefault();
+            if (user != null && user.Email.Equals(mail))
+                retval = true;
+            return retval;
+        }
+
+        public ApplicationUser GetUserById(string id)
+        {
+            ApplicationUser retval = context.Users.Where(u => u.Id.Equals(id)).FirstOrDefault();
             return retval;
         }
 

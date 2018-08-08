@@ -29,8 +29,7 @@ namespace Distance.Models
         
         public IEnumerable<CarStatuses> CarStatus { get; set; }
 
-        [Display(Name = "Status samochodu")]
-        [Required]
+
         public byte CarStatusId { get; set; } //FK dla CarStatus
 
         public string Title

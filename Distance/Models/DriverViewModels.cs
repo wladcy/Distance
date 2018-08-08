@@ -9,28 +9,34 @@ namespace Distance.Models
 {
     public class DriverViewModels
     {
-        public int Id { get; set; }
-
         [Required]
         [StringLength(20)]
         [Display(Name = "Imie")]
-        public string Name { get; set; } //imie
+        public string FirstName { get; set; }
 
         [Required]
         [StringLength(30)]
         [Display(Name = "Nazwisko")]
-        public string Surname { get; set; } //nazwisko
+        public string LastName { get; set; }
 
-        [Display(Name = "Data urodzenia")]
-        [Min18YearsIfADriverValidator]
-        public DateTime? Birthdate { get; set; } //data urodzenia
+        [Display(Name = "Ulica")]
+        public string Street { get; set; }
 
-        //konto premium
-        public bool IsPremiumAccount { get; set; }
+        [Required]
+        [Display(Name = "Numer domu")]
+        public string HouseNumber { get; set; }
 
-        public AccountTypeViewModels AccountType { get; set; }
+        [Display(Name = "Numer mieszkania")]
+        public string FlatNumber { get; set; }
 
-        [Display(Name = "Typ konta")]
-        public byte AccountTypeId { get; set; } //FK dla AccountType
+        [Required]
+        [Display(Name = "Kod pocztowy")]
+        public string ZipCode { get; set; }
+
+        [Required]
+        [Display(Name = "Miejscowość")]
+        public string City { get; set; }
+
+        public string Id { get; set; }
     }
 }

@@ -84,5 +84,39 @@
             </dd>
         </dl>
     </div>
+    <div>
+        <h4 style="color:white;">Dane osobowe</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>Imie:</dt>
+            <dd>
+                @Model.FirstName
+            </dd>
+            <dt>Nazwisko:</dt>
+            <dd>
+                @Model.LastName
+            </dd>
+            <dt>Adres:</dt>
+            <dd>
+                @if (!string.IsNullOrEmpty(Model.FlatNumber) && !string.IsNullOrEmpty(Model.Street))
+                {
+                    @(Model.Street + " " + Model.HouseNumber + "/" + Model.FlatNumber)<br />@(Model.ZipCode + " " + Model.City)
+                }
+                else if (!string.IsNullOrEmpty(Model.FlatNumber))
+                {
+                    @(Model.HouseNumber + "/" + Model.FlatNumber)<br />@(Model.ZipCode + " " + Model.City)
+                }
+                else if (!string.IsNullOrEmpty(Model.Street))
+                {
+                    @(Model.Street + " " + Model.HouseNumber)<br />@(Model.ZipCode + " " + Model.City)
+                }
+                else
+                {
+                    @(Model.ZipCode + " " + Model.City + ", " + Model.HouseNumber)
+                }
+            </dd>
+        </dl>
+
+    </div>
 </body>
 

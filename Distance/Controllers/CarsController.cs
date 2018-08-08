@@ -27,9 +27,9 @@ namespace Distance.Controllers
 
         //dodawanie kierowcy z danych pobranych z widoku Drivers/New
         [HttpPost]
-        public ActionResult Create(DriverViewModels driver)
+        public ActionResult Create(ApplicationUser driver)
         {
-            _context.Drivers.Add(driver);
+            _context.Users.Add(driver);
             _context.SaveChanges();
 
             return RedirectToAction("Index", "Drivers");

@@ -1,6 +1,6 @@
-﻿@model IEnumerable<Distance.Models.Driver>
+﻿@model IEnumerable<Distance.Models.DriverViewModels>
 
-@{ 
+@{
     ViewBag.Title = "Drivers";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -8,7 +8,7 @@
 <body style="background-color:#2F3336; color:white;">
     <h2 style="color:white;">Kierowcy w firmie</h2>
     <p>
-        @Html.ActionLink("DODAJ KIEROWCE", "New", "Drivers", null, new { @class = "btn btn-primary" })
+        @Html.ActionLink("Dodaj kierowce", "New", "Drivers", null, new { @class = "btn btn-primary" })
     </p>
     @if (!Model.Any())
     {
@@ -19,19 +19,34 @@
         <table id="drivers" class="table-bordered table-hover">
             <thead>
                 <tr>
-                    <th>KIEROWCA</th>
-                    <th>ZNIŻKA</th>
-                    <th>TYP KONTA</th>
-                    <th>USUŃ</th>
+                    <th>Kierowca</th>
+                    <th>Adres</th>
+                    <th>Akcje</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var driver in Model)
                 {
                     <tr>
-                        <td>@Html.ActionLink(driver.Name + " " + driver.Surname, "Edit", "Drivers", new { id = driver.Id }, null)</td>
-                        <td>@driver.AccountType.DiscountRate</td>
-                        <td>@driver.AccountType.Name</td>
+                        <td>@Html.ActionLink(driver.FirstName + " " + driver.LastName, "Edit", "Drivers", new { id = driver.Id }, null)</td>
+                        <td>
+                            @if (!string.IsNullOrEmpty(driver.FlatNumber) && !string.IsNullOrEmpty(driver.Street))
+                            {
+                                @(driver.Street + " " + driver.HouseNumber + "/" + driver.FlatNumber)<br />@(driver.ZipCode + " " + driver.City)
+                            }
+                            else if (!string.IsNullOrEmpty(driver.FlatNumber))
+                            {
+                                @(driver.HouseNumber + "/" + driver.FlatNumber)<br />@(driver.ZipCode + " " + driver.City)
+                            }
+                            else if (!string.IsNullOrEmpty(driver.Street))
+                            {
+                                @(driver.Street + " " + driver.HouseNumber)<br />@(driver.ZipCode + " " + driver.City)
+                            }
+                            else
+                            {
+                                @(driver.ZipCode + " " + driver.City + ", " + driver.HouseNumber)
+                            }
+                        </td>
                         <td>
                             <button data-driver-id="@driver.Id" class="btn-link js-delete">USUŃ</button>
                         </td>
@@ -53,12 +68,12 @@
                 var button = $(this);
 
                 bootbox.confirm("Czy napewno chcesz usunąć tego kierowcę?",
-                    function(result) {
+                    function (result) {
                         if (result) {
                             $.ajax({
                                 url: "/api/drivers/" + button.attr("data-driver-id"),
                                 method: "DELETE",
-                                success: function() {
+                                success: function () {
                                     button.parents("tr").remove();
                                 }
                             });

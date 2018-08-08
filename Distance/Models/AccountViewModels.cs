@@ -66,6 +66,7 @@ namespace Distance.Models
     public class RegisterViewModel : IPasswordViewModels, IAddressViewModel, IPersonalDataViewModels
     {
         [Required]
+        [EmailValidator]
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }

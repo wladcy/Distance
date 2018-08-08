@@ -136,11 +136,8 @@ namespace Distance.Models
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
-    {
-
-        public DbSet<DriverViewModels> Drivers { get; set; }
-        public DbSet<Cars> Cars { get; set; }
-        public DbSet<AccountTypeViewModels> AccountTypes { get; set; }
+    {        
+        public DbSet<Cars> Cars { get; set; }        
         public DbSet<CarStatuses> CarStatuses { get; set; }
         public DbSet<DicCountries> DicCountries { get; set; }
         public DbSet<Company> Company { get; set; }
