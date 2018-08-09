@@ -12,10 +12,10 @@ namespace Distance.Validators
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             ValidationResult retval = new ValidationResult("");
-            AddPhoneNumberViewModel checkValue = (AddPhoneNumberViewModel)validationContext.ObjectInstance;
+            IPhoneNumberViewModel checkValue = (IPhoneNumberViewModel)validationContext.ObjectInstance;
             string phone = checkValue.Number.Replace(" ", "");
-            
-            if (phone.Length!=9)
+
+            if (phone.Length != 9 && !checkValue.IsEditMode)
                 retval.ErrorMessage += "Numer telefonu powinien składać się z 9 cyfr. ";
 
             return string.IsNullOrEmpty(retval.ErrorMessage) ? ValidationResult.Success : retval;

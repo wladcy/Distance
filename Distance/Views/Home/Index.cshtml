@@ -1,11 +1,21 @@
-﻿@{
+﻿@model Distance.Models.CurrentUserInTravelViewModels
+@{
     ViewBag.Title = "Home";
 }
-<p style="color:white;" class="text-success">@ViewBag.StatusMessage</p>
-<body style="background-color:#2F3336;">
+
+<div class="row" style="background-color:#2F3336;">
+    <p style="color:white;" class="text-success">@ViewBag.StatusMessage</p>
+    @if (Model.HasCarInTravel)
+    {
+        <div class=" jumbotron col-md-6" style="background-color:#2F3336;">
+            <h3 style="color:white">Masz niezakończoną podróż służbową. @Html.ActionLink("Zakończ", "StopTravel", "Travels", new { id = Model.CarId }, null )</h3>
+        </div>
+    }
+    
+</div>
+<div class="row">
     <h1 style="color:white; font-size:30px; text-align:center;">WYPOŻYCZALNIA SAMOCHODÓW</h1>
     <p style="color:white; font-size:18px; text-align:center;">Zapraszamy do skorzystania z naszej oferty. Oferujemy samochody dostawcze jak również osobowe.</p>
-
-</body>
+</div>
 
 

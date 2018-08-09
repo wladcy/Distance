@@ -7,6 +7,7 @@ using System.Web.Http;
 using AutoMapper;
 using Distance.Dtos;
 using Distance.Models;
+using Microsoft.AspNet.Identity;
 
 namespace Distance.Controllers.Api
 {
@@ -75,8 +76,8 @@ namespace Distance.Controllers.Api
         [HttpDelete]
         public IHttpActionResult DeleteCar(int id)
         {
-            Controllers.CarsController uc = new Controllers.CarsController();
-            if (!uc.IsAdministrator())
+            
+            if (!IsAdministrator())
                 return NotFound();
             var carInDb = _context.Cars.SingleOrDefault(c => c.Id == id);
 
@@ -87,6 +88,19 @@ namespace Distance.Controllers.Api
             _context.SaveChanges();
 
             return Ok();
+        }
+
+        public bool IsAdministrator()
+        {
+            bool retval = false;
+            var userId = User.Identity.GetUserId();
+            DatabaseControler dc = new DatabaseControler();
+            var user = dc.GetUserById(userId);
+            if (dc.GetUserRoles(user).Contains("ADMINISTRATOR"))
+            {
+                retval = true;
+            }
+            return retval;
         }
     }
 }

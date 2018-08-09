@@ -1,84 +1,114 @@
-﻿@model IEnumerable<Distance.Models.DriverViewModels>
+﻿@model Distance.Models.DriversViewModels
+@using Microsoft.AspNet.Identity;
 
 @{
     ViewBag.Title = "Drivers";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<body style="background-color:#2F3336; color:white;">
-    <h2 style="color:white;">Kierowcy w firmie</h2>
-    <p>
-        @Html.ActionLink("Dodaj kierowce", "New", "Drivers", null, new { @class = "btn btn-primary" })
-    </p>
-    @if (!Model.Any())
-    {
-        <p>Obecnie nie ma kierowców</p>
-    }
-    else
-    {
-        <table id="drivers" class="table-bordered table-hover">
-            <thead>
-                <tr>
-                    <th>Kierowca</th>
-                    <th>Adres</th>
-                    <th>Akcje</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var driver in Model)
-                {
+@if (!Model.IsSetCompany)
+{
+    <p>Przed dodaniem kierowców uzupełnij dane firmy!!!</p>
+}
+else
+{
+    <body style="background-color:#2F3336; color:white;">
+        <h2 style="color:white;">Kierowcy w firmie</h2>
+        <p>
+            @Html.ActionLink("Dodaj kierowce", "New", "Drivers", null, new { @class = "btn btn-primary" })
+        </p>
+        @if (!Model.Drivers.Any())
+        {
+            <p>Obecnie nie ma kierowców</p>
+        }
+        else
+        {
+            <table id="drivers" class="table-bordered table-hover">
+                <thead>
                     <tr>
-                        <td>@Html.ActionLink(driver.FirstName + " " + driver.LastName, "Edit", "Drivers", new { id = driver.Id }, null)</td>
-                        <td>
-                            @if (!string.IsNullOrEmpty(driver.FlatNumber) && !string.IsNullOrEmpty(driver.Street))
-                            {
-                                @(driver.Street + " " + driver.HouseNumber + "/" + driver.FlatNumber)<br />@(driver.ZipCode + " " + driver.City)
-                            }
-                            else if (!string.IsNullOrEmpty(driver.FlatNumber))
-                            {
-                                @(driver.HouseNumber + "/" + driver.FlatNumber)<br />@(driver.ZipCode + " " + driver.City)
-                            }
-                            else if (!string.IsNullOrEmpty(driver.Street))
-                            {
-                                @(driver.Street + " " + driver.HouseNumber)<br />@(driver.ZipCode + " " + driver.City)
-                            }
-                            else
-                            {
-                                @(driver.ZipCode + " " + driver.City + ", " + driver.HouseNumber)
-                            }
-                        </td>
-                        <td>
-                            <button data-driver-id="@driver.Id" class="btn-link js-delete">USUŃ</button>
-                        </td>
+                        <th>Kierowca</th>
+                        <th>Adres</th>
+                        <th>Akcje</th>
                     </tr>
-                }
-            </tbody>
-        </table>
-    }
-</body>
+                </thead>
+                <tbody>
+                    @foreach (var driver in Model.Drivers)
+                    {
+                        <tr>
+                            <td>@(driver.FirstName + " " + driver.LastName)</td>
+                            <td>
+                                @if (!string.IsNullOrEmpty(driver.FlatNumber) && !string.IsNullOrEmpty(driver.Street))
+                                {
+                                    @(driver.Street + " " + driver.HouseNumber + "/" + driver.FlatNumber)<br />@(driver.ZipCode + " " + driver.City)
+                                }
+                                else if (!string.IsNullOrEmpty(driver.FlatNumber))
+                                {
+                                    @(driver.HouseNumber + "/" + driver.FlatNumber)<br />@(driver.ZipCode + " " + driver.City)
+                                }
+                                else if (!string.IsNullOrEmpty(driver.Street))
+                                {
+                                    @(driver.Street + " " + driver.HouseNumber)<br />@(driver.ZipCode + " " + driver.City)
+                                }
+                                else
+                                {
+                                    @(driver.ZipCode + " " + driver.City + ", " + driver.HouseNumber)
+                                }
+                            </td>
+                            <td>
+                                @if (!User.Identity.GetUserId().Equals(driver.Id))
+                                {
+                                    <button data-driver-id="@driver.Id" class="btn-link js-delete">Usuń</button>
+                                }
+                                <button data-driver-id="@driver.Id" class="btn-link js-edit">Edytuj</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </body>
+}
 
 
 @section scripts
 {
     <script>
         $(document).ready(function () {
-            $("#drivers").DataTable();
+            $("#drivers").DataTable({
+                "language": {
+                    "lengthMenu": "Pokazuj _MENU_ na stronie",
+                    "zeroRecords": "Nic nie znaleziono",
+                    "info": "Wyswietla stronę _PAGE_ z _PAGES_",
+                    "infoEmpty": "Brak danych",
+                    "infoFiltered": "(Wyszukane z _MAX_ wszystkich rekordów)",
+                    "search": "Wyszukaj:",
+                    "paginate": {
+                        "first": "Pierwsza",
+                        "last": "Ostatnia",
+                        "next": "Następna",
+                        "previous": "Wcześniejsza"
+                    }
+                }
+            });
 
             $("#drivers").on("click", ".js-delete", function () {
                 var button = $(this);
 
-                bootbox.confirm("Czy napewno chcesz usunąć tego kierowcę?",
-                    function (result) {
-                        if (result) {
-                            $.ajax({
-                                url: "/api/drivers/" + button.attr("data-driver-id"),
-                                method: "DELETE",
-                                success: function () {
-                                    button.parents("tr").remove();
-                                }
-                            });
+                result = confirm("Czy napewno chcesz usunąć tego kierowcę?");
+                if (result) {
+                    $.ajax({
+                        url: "/api/drivers/" + button.attr("data-driver-id"),
+                        method: "DELETE",
+                        success: function () {
+                            button.parents("tr").remove();
                         }
                     });
+                }
+            });
+
+            $("#drivers").on("click", ".js-edit", function () {
+                var url = "/Drivers/Edit/" + $(this).attr("data-driver-id");
+                console.log(url);
+                window.location.href = url;
             });
         });
     </script>

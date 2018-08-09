@@ -78,7 +78,8 @@ namespace Distance.Controllers
                 HouseNumber = user.HouseNumber,
                 FlatNumber = user.FlatNumber,
                 ZipCode = user.ZipCode,
-                City = user.City
+                City = user.City,
+                Email = user.Email
             };
             return View(model);
         }
@@ -206,7 +207,7 @@ namespace Distance.Controllers
                 {
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                 }
-                return RedirectToAction("Index", new { Message = ManageMessageId.AddPhoneSuccess });
+                return RedirectToAction("Index", "Home", new { Message = AccountMessageId.RegisterAccountSuccess });
             }
             // If we got this far, something failed, redisplay form
             ModelState.AddModelError("", "Failed to verify phone");

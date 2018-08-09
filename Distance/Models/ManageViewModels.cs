@@ -61,7 +61,7 @@ namespace Distance.Models
         public string ConfirmPassword { get; set; }
     }
 
-    public class AddPhoneNumberViewModel
+    public class AddPhoneNumberViewModel:IPhoneNumberViewModel
     {
         [Required]
         [Phone]
@@ -81,6 +81,8 @@ namespace Distance.Models
         }
 
         public string Country { get; set; }
+
+        public bool IsEditMode { get; set; }
     }
 
     public class VerifyPhoneNumberViewModel
@@ -100,4 +102,10 @@ namespace Distance.Models
         public string SelectedProvider { get; set; }
         public ICollection<System.Web.Mvc.SelectListItem> Providers { get; set; }
     }
+
+    public interface IPhoneNumberViewModel
+    {
+        string Number { get; set; }
+        bool IsEditMode { get; set; }
+    } 
 }

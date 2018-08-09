@@ -185,8 +185,23 @@ namespace Distance.Controllers
             return retval;
         }
 
-        public void UpdateUserData(ApplicationUser user)
+        public void UpdateUserData(ApplicationUser user, string currentUserId)
         {
+            if (!user.Id.Equals(currentUserId))
+            {
+                int companyId = getCompanyIdByUser(user);
+                if (companyId == 0)
+                {
+                    ApplicationUser currentUser = GetUserById(currentUserId);
+                    companyId = getCompanyIdByUser(currentUser);
+                    UserInCompany uic = new UserInCompany();
+                    uic.CompanyId = companyId;
+                    uic.UserId = user.Id;
+                    uic.CreateTime = DateTime.Now;
+                    uic.ModyfiTime = DateTime.Now;
+                    context.Entry(uic).State = EntityState.Added;
+                }
+            }
             context.Entry(user).State = EntityState.Modified;
             context.SaveChanges();
         }
@@ -252,7 +267,7 @@ namespace Distance.Controllers
         public TravelViewModels GetCurrentTravel(ApplicationUser user, int carId)
         {
             int companyId = getCompanyIdByUser(user);
-            Travel travel = context.Travel.Where(t => t.Car.Id == carId && t.Car.Company.CompanyID == companyId && t.User.Id.Equals(user.Id) && t.Car.CarStatus.Status.Equals("W trasie")).FirstOrDefault();
+            Travel travel = context.Travel.Where(t => t.Car.Id == carId && t.Car.Company.CompanyID == companyId && t.User.Id.Equals(user.Id) && t.Car.CarStatus.Status.Equals("W trasie") && t.CarMileageStop == 0).FirstOrDefault();
             TravelViewModels tvm = new TravelViewModels();
             if (travel != null && travel.Id != 0)
             {
@@ -286,7 +301,7 @@ namespace Distance.Controllers
             List<DriverViewModels> retval = new List<DriverViewModels>();
             int companyId = getCompanyIdByUser(user);
             var list = context.UserInCompany.Include(u => u.User).Where(u => u.CompanyId == companyId).ToList();
-            foreach(var item in list)
+            foreach (var item in list)
             {
                 DriverViewModels dvm = new DriverViewModels();
                 dvm.City = item.User.City;
@@ -314,6 +329,27 @@ namespace Distance.Controllers
         public ApplicationUser GetUserById(string id)
         {
             ApplicationUser retval = context.Users.Where(u => u.Id.Equals(id)).FirstOrDefault();
+            return retval;
+        }
+
+        public int HasCarInTravel(string userId)
+        {
+            int retval = 0;
+            List<Travel> list = context.Travel.Where(t => t.UserId.Equals(userId)).ToList();
+            foreach (Travel t in list)
+            {
+                if (inTravelWithCurrentUser(t.CarId, userId))
+                {
+                    retval = t.CarId;
+                    break;
+                }
+            }
+            return retval;
+        }
+
+        public List<string> GetUserRoles(ApplicationUser user)
+        {
+            List<string> retval = context.Database.SqlQuery<string>("select [Name] from [Distance].[dbo].[AspNetRoles] as roles, [Distance].[dbo].[AspNetUserRoles] as users where roles.Id=users.RoleId and users.UserId='" + user.Id + "'").ToList();
             return retval;
         }
 

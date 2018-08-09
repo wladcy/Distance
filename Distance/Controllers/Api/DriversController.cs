@@ -7,9 +7,11 @@ using System.Web.Http;
 using AutoMapper;
 using Distance.Dtos;
 using Distance.Models;
+using Microsoft.AspNet.Identity;
 
 namespace Distance.Controllers.Api
 {
+    [Authorize]
     public class DriversController : ApiController
     {
         private ApplicationDbContext _context;
@@ -76,15 +78,30 @@ namespace Distance.Controllers.Api
         [HttpDelete]
         public IHttpActionResult DeleteDriver(string id)
         {
+            if (!IsAdministrator())
+                return NotFound();
             var driverInDb = _context.Users.SingleOrDefault(c => c.Id.Equals(id));
-
-            if (driverInDb == null)
+            string userId = User.Identity.GetUserId();
+            if (driverInDb == null || userId.Equals(id))
                 return NotFound();
 
             _context.Users.Remove(driverInDb);
             _context.SaveChanges();
 
             return Ok();
+        }
+
+        public bool IsAdministrator()
+        {
+            bool retval = false;
+            var userId = User.Identity.GetUserId();
+            DatabaseControler dc = new DatabaseControler();
+            var user = dc.GetUserById(userId);
+            if (dc.GetUserRoles(user).Contains("ADMINISTRATOR"))
+            {
+                retval = true;
+            }
+            return retval;
         }
     }
 }

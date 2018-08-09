@@ -164,11 +164,11 @@ namespace Distance.Controllers
                     user.Street = model.Street;
                     user.ZipCode = model.ZipCode;
                     user.CreateTime = DateTime.Now;
-                    user.ModyfiTime = DateTime.Now;
-                    DatabaseControler dc = new DatabaseControler();
-                    dc.UpdateUserData(user);
+                    user.ModyfiTime = DateTime.Now;                    
                     var currentUser = UserManager.FindByName(user.UserName);
                     var role = UserManager.AddToRole(currentUser.Id, "Administrator".ToUpper());
+                    DatabaseControler dc = new DatabaseControler();
+                    dc.UpdateUserData(user, currentUser.Id);
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
 
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
@@ -177,7 +177,7 @@ namespace Distance.Controllers
                     var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     await UserManager.SendEmailAsync(user.Id, "Potwierdź konto", "Kliknij <a href=\"" + callbackUrl + "\">link</a>, aby potwierdzić utworzenie konta.");
 
-                    return RedirectToAction("Index", "Home" , new { Message = AccountMessageId.RegisterAccountSuccess });
+                    return RedirectToAction("AddPhoneNumber", "Manage" , new { Message = AccountMessageId.RegisterAccountSuccess });
                 }
                 AddErrors(result);
             }

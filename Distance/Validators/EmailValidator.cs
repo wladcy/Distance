@@ -13,11 +13,11 @@ namespace Distance.Validators
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             ValidationResult retval = new ValidationResult("");
-            RegisterViewModel rvm = (RegisterViewModel)validationContext.ObjectInstance;
+            IPersonalDataViewModels rvm = (IPersonalDataViewModels)validationContext.ObjectInstance;
             if (rvm.Email != null)
             {
                 DatabaseControler dc = new DatabaseControler();
-                if (dc.IsMailInDatabase(rvm.Email))
+                if (dc.IsMailInDatabase(rvm.Email)&&!rvm.IsEditMode)
                     retval.ErrorMessage += "Użytkownik o podanym adresie mail istnieje w naszej bazie. ";
             }
             

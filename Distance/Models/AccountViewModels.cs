@@ -115,6 +115,31 @@ namespace Distance.Models
         [CityValidator]
         [Display(Name = "Miejscowość")]
         public string City { get; set; }
+
+        public string Id { get; set; }
+
+        public string Title
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(Id))
+                    return "Edytuj dane kierowcy";
+
+                return "Dodaj nowego kierowce";
+            }
+        }
+
+        public string Button
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(Id))
+                    return "Edytuj";
+                return "Dodaj";
+            }
+        }
+
+        public bool IsEditMode { get; set; }
     }
 
     public class ResetPasswordViewModel : IPasswordViewModels
@@ -147,6 +172,12 @@ namespace Distance.Models
         public string Email { get; set; }
     }
 
+    public class CurrentUserInTravelViewModels
+    {
+        public bool HasCarInTravel { get; set; }
+        public int CarId { get; set; }
+    }
+
     public interface IPasswordViewModels
     {
         string Password { get; set; }
@@ -155,7 +186,9 @@ namespace Distance.Models
     public interface IPersonalDataViewModels
     {
         string FirstName { get; set; }
-        string LastName { get; set; }        
+        string LastName { get; set; }      
+        string Email { get; set; }
+        bool IsEditMode { get; set; }
     }
 
     public interface IAddressViewModel

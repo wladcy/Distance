@@ -12,7 +12,10 @@
                     @Html.ActionLink("Witaj " + DriversController.GetUserNameById(User.Identity.GetUserId()) + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Zarządzaj" })
                 </li>
                 <li>@Html.ActionLink("Firma", "Index", "Company")</li>
-                <li>@Html.ActionLink("Kierowcy", "Index", "Drivers")</li>
+                @if (DriversController.IsAdministrator(User.Identity.GetUserId()))
+                {
+                    <li>@Html.ActionLink("Kierowcy", "Index", "Drivers")</li>
+                }
                 <li>@Html.ActionLink("Samochody", "Index", "Cars")</li>
                 <li><a href="javascript:document.getElementById('logoutForm').submit()">Wyloguj</a></li>
             </ul>

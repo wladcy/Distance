@@ -47,13 +47,13 @@ else
                             if (Model.IsAdministrator)
                             {
                                 <button data-car-id="@car.Id" class="btn-link js-delete">Usuń</button>
-                                <button data-car-id="@car.Id" class="btn-link" id="Edit">Edytuj</button>
+                                <button data-car-id="@car.Id" class="btn-link js-edit">Edytuj</button>
                             }
-                            <button data-car-id="@car.Id" class="btn-link" id="Choose">Wybierz</button>
+                            <button data-car-id="@car.Id" class="btn-link js-choose">Wybierz</button>
                         }
                         else if (car.InTravelWithCurrentUser)
                         {
-                            <button data-car-id="@car.Id" class="btn-link" id="Stop">Zakończ podróż</button>
+                            <button data-car-id="@car.Id" class="btn-link js-stop">Zakończ podróż</button>
                         }
                         else
                         {
@@ -101,17 +101,18 @@ else
                     });
                 }
             });
-            $("#Edit").on("click", function () {
+            $("#cars").on("click", ".js-edit", function () {
                 var url = "/Cars/Edit/" + $(this).attr("data-car-id");
+                console.log(url);
                 window.location.href = url;
             });
 
-            $("#Choose").on("click", function () {
+            $("#cars").on("click", ".js-choose", function () {
                 var url = "/Travels/StartTravel/" + $(this).attr("data-car-id");
                 window.location.href = url;
             });
 
-            $("#Stop").on("click", function () {
+            $("#cars").on("click", ".js-stop", function () {
                 var url = "/Travels/StopTravel/" + $(this).attr("data-car-id");
                 window.location.href = url;
             });

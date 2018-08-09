@@ -114,14 +114,16 @@ namespace Distance.Controllers
         public bool IsAdministrator()
         {
             bool retval = false;
-            var userName = User.Identity.Name;
-            ApplicationUserManager userManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
-            var user = userManager.FindByName(userName);
-            if (userManager.GetRoles(user.Id).Contains("ADMINISTRATOR"))
+            var userId = User.Identity.GetUserId();
+            DatabaseControler dc = new DatabaseControler();            
+            var user = dc.GetUserById(userId);
+            if (dc.GetUserRoles(user).Contains("ADMINISTRATOR"))
             {
                 retval = true;
             }
             return retval;
         }
+
+
     }
 }

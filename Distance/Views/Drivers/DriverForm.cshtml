@@ -1,46 +1,140 @@
-﻿@model Distance.ViewModels.NewDriverViewModel
+﻿@model Distance.Models.DriverViewModels
 @{
     /**/
 
-    ViewBag.Title = "New";
+    ViewBag.Title = "Edycja bazy kierowców";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <body style="background-color:#2F3336; color:white;">
     <h2 style="color:white;">@Model.Title</h2>
-    @using (Html.BeginForm("Save", "Drivers"))
+    @if (!Model.IsEditMode)
     {
-        @Html.ValidationSummary()
-        <div class="form-group">
-            @Html.LabelFor(m => m.Driver.Name)
-            @Html.TextBoxFor(m => m.Driver.Name, new { @class = "form-control" })
-            @Html.ValidationMessageFor(m => m.Driver.Name)
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.Driver.Surname)
-            @Html.TextBoxFor(m => m.Driver.Surname, new { @class = "form-control" })
-            @Html.ValidationMessageFor(m => m.Driver.Surname)
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.Driver.Birthdate)
-            @Html.TextBoxFor(m => m.Driver.Birthdate, "{0:d/MM/yyyy}", new { @class = "form-control" })
-            @Html.ValidationMessageFor(m => m.Driver.Birthdate)
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(m => m.Driver.AccountTypeId)
-            @Html.DropDownListFor(m => m.Driver.AccountTypeId, new SelectList(Model.AccountTypes, "Id", "Name"), "Wybierz typ konta", new { @class = "form-control" })
-            @Html.ValidationMessageFor(m => m.Driver.AccountTypeId)
-        </div>
-        <div class="checkbox">
-            <label>
-                @Html.CheckBoxFor(m => m.Driver.IsPremiumAccount) Konto Premium
-            </label>
-        </div>
+        using (Html.BeginForm("Save", "Drivers"))
+        {
+            @Html.ValidationSummary()
+            <div class="form-group">
+                @Html.LabelFor(m => m.FirstName)
+                @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.FirstName)
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.LastName)
+                @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.LastName)
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Street)
+                @Html.TextBoxFor(m => m.Street, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Street)
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.HouseNumber)
+                @Html.TextBoxFor(m => m.HouseNumber, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.HouseNumber)
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.FlatNumber)
+                @Html.TextBoxFor(m => m.FlatNumber, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.FlatNumber)
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.ZipCode)
+                @Html.TextBoxFor(m => m.ZipCode, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.ZipCode)
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.City)
+                @Html.TextBoxFor(m => m.City, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.City)
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Number)
+                @Html.TextBoxFor(m => m.Number, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Number)
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Email)
+                @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Email)
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Password)
+                @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Password)
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.ConfirmPassword)
+                @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.ConfirmPassword)
+            </div>
 
-        @Html.HiddenFor(m => m.Driver.Id)
-        @Html.AntiForgeryToken()
-        <button type="submit" class="btn btn-primary">DODAJ</button>
 
+            @Html.HiddenFor(m => m.Id)
+            @Html.AntiForgeryToken()
+            <button type="submit" class="btn btn-primary">@Model.Button</button>
+
+        }
+    }
+    else
+    {
+        using (Html.BeginForm("Save", "Drivers"))
+        {
+            @Html.ValidationSummary()
+            <div class="form-group">
+                @Html.LabelFor(m => m.FirstName)
+                @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.FirstName)
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.LastName)
+                @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.LastName)
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Street)
+                @Html.TextBoxFor(m => m.Street, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Street)
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.HouseNumber)
+                @Html.TextBoxFor(m => m.HouseNumber, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.HouseNumber)
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.FlatNumber)
+                @Html.TextBoxFor(m => m.FlatNumber, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.FlatNumber)
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.ZipCode)
+                @Html.TextBoxFor(m => m.ZipCode, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.ZipCode)
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.City)
+                @Html.TextBoxFor(m => m.City, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.City)
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Number)
+                @Html.TextBoxFor(m => m.Number, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Number)
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Email)
+                @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Email)
+            </div>       
+
+            @Html.HiddenFor(m => m.Id)
+            @Html.HiddenFor(m=>m.Password)
+            @Html.HiddenFor(m=>m.ConfirmPassword)
+            @Html.HiddenFor(m=>m.IsEditMode)
+            @Html.AntiForgeryToken()
+            <button type="submit" class="btn btn-primary">@Model.Button</button>
+
+        }
     }
 </body>
 

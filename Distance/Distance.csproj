@@ -369,6 +369,7 @@
     <Compile Include="Models\CarViewModels.cs" />
     <Compile Include="Models\CarStatusViewModels.cs" />
     <Compile Include="Models\CompanyViewModels.cs" />
+    <Compile Include="Models\DriversViewModels.cs" />
     <Compile Include="Models\DriverViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
