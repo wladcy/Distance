@@ -42,5 +42,6 @@ namespace Distance.Models
 
         public bool IsSetCompany { get; set; }
         public bool IsAdministrator { get; set; }
+        public bool IsAccountConfirmed { get; set; }
     }
 }

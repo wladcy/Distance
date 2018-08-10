@@ -42,5 +42,10 @@ namespace Distance.Validators
             return string.IsNullOrEmpty(retval.ErrorMessage) ? ValidationResult.Success : retval;
 
         }
+
+        public ValidationResult IsValid(ValidationContext context)
+        {
+            return IsValid(new object(), context);
+        }
     }
 }

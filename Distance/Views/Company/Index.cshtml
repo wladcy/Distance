@@ -4,55 +4,62 @@
     ViewBag.Title = "Company";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
 <body style="background-color:#2F3336; color:white;">
     <h2 style="color:white;" class="lead">Firma</h2>
     <p class="text-success">@ViewBag.StatusMessage</p>
-    @if (Model.IsAdministrator)
+    @if (Model.IsAccountConfirmed)
     {
+        if (Model.IsAdministrator)
+        {
+            if (Model.IsSetCompany)
+            {
+                <p>
+                    @Html.ActionLink("Aktualizuj dane", "UpdateCompany", "Company", null, new { @class = "btn btn-primary" })
+                </p>
+            }
+            else
+            {
+                <p>
+                    @Html.ActionLink("Dodaj dane", "UpdateCompany", "Company", null, new { @class = "btn btn-primary" })
+                </p>
+            }
+        }
         if (Model.IsSetCompany)
         {
-            <p>
-                @Html.ActionLink("Aktualizuj dane", "UpdateCompany", "Company", null, new { @class = "btn btn-primary" })
-            </p>
-        }
-        else
-        {
-            <p>
-                @Html.ActionLink("Dodaj dane", "UpdateCompany", "Company", null, new { @class = "btn btn-primary" })
-            </p>
+            <h4 style="color:white;">Dane firmy:</h4>
+            <dl class="dl-horizontal">
+                <dt>Nazwa:</dt>
+                <dd>@Model.CompanyName</dd>
+                <dt>Adres:</dt>
+                <dd>
+                    @if (!string.IsNullOrEmpty(Model.FlatNumber) && !string.IsNullOrEmpty(Model.Street))
+                    {
+                        @(Model.Street + " " + Model.HouseNumber + "/" + Model.FlatNumber)<br />@(Model.ZipCode + " " + Model.City)
+                    }
+                    else if (!string.IsNullOrEmpty(Model.FlatNumber))
+                    {
+                        @(Model.HouseNumber + "/" + Model.FlatNumber)<br />@(Model.ZipCode + " " + Model.City)
+                    }
+                    else if (!string.IsNullOrEmpty(Model.Street))
+                    {
+                        @(Model.Street + " " + Model.HouseNumber)<br />@(Model.ZipCode + " " + Model.City)
+                    }
+                    else
+                    {
+                        @(Model.ZipCode + " " + Model.City + ", " + Model.HouseNumber)
+                    }
+                </dd>
+                <dt>NIP:</dt>
+                <dd>@Model.NIP</dd>
+            </dl>
         }
     }
-    @if (Model.IsSetCompany)
+    else
     {
-        <h4 style="color:white;">Dane firmy:</h4>
-        <dl class="dl-horizontal">
-            <dt>Nazwa:</dt>
-            <dd>@Model.CompanyName</dd>
-            <dt>Adres:</dt>
-            <dd>
-                @if (!string.IsNullOrEmpty(Model.FlatNumber) && !string.IsNullOrEmpty(Model.Street))
-                {
-                    @(Model.Street + " " + Model.HouseNumber + "/" + Model.FlatNumber)<br />@(Model.ZipCode + " " + Model.City)
-                }
-                else if (!string.IsNullOrEmpty(Model.FlatNumber))
-                {
-                    @(Model.HouseNumber + "/" + Model.FlatNumber)<br />@(Model.ZipCode + " " + Model.City)
-                }
-                else if (!string.IsNullOrEmpty(Model.Street))
-                {
-                    @(Model.Street + " " + Model.HouseNumber)<br />@(Model.ZipCode + " " + Model.City)
-                }
-                else
-                {
-                    @(Model.ZipCode + " " + Model.City + ", " + Model.HouseNumber)
-                }
-            </dd>
-            <dt>NIP:</dt>
-            <dd>@Model.NIP</dd>
-        </dl>
+        <p style="color:white">
+            Przed podaniem danych firmy musisz aktywowac konto. Link aktywacyjny został wysłany na Twojego maila. 
+            @Html.ActionLink("Nie dostałeś maila?", "SentMail", "Account")
+        </p>
     }
 </body>
-
-
 

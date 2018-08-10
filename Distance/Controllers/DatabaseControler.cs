@@ -317,6 +317,26 @@ namespace Distance.Controllers
             return retval;
         }
 
+        public IEnumerable<DriverViewModels> GetAllUsersByCarId(int carId)
+        {
+            List<DriverViewModels> retval = new List<DriverViewModels>();
+            var list = (from u in context.Users join t in context.Travel on u.Id equals t.UserId where t.CarId == carId select u).ToList().Distinct();
+            foreach (var item in list)
+            {
+                DriverViewModels dvm = new DriverViewModels();
+                dvm.City = item.City;
+                dvm.FirstName = item.FirstName;
+                dvm.FlatNumber = item.FlatNumber;
+                dvm.HouseNumber = item.HouseNumber;
+                dvm.Id = item.Id;
+                dvm.LastName = item.LastName;
+                dvm.Street = item.Street;
+                dvm.ZipCode = item.ZipCode;
+                retval.Add(dvm);
+            }
+            return retval;
+        }
+
         public bool IsMailInDatabase(string mail)
         {
             bool retval = false;
@@ -350,6 +370,47 @@ namespace Distance.Controllers
         public List<string> GetUserRoles(ApplicationUser user)
         {
             List<string> retval = context.Database.SqlQuery<string>("select [Name] from [Distance].[dbo].[AspNetRoles] as roles, [Distance].[dbo].[AspNetUserRoles] as users where roles.Id=users.RoleId and users.UserId='" + user.Id + "'").ToList();
+            return retval;
+        }
+
+        public ReportDataModel GetReportData(int carId)
+        {
+            ReportDataModel rdm = new ReportDataModel();
+            Cars car = context.Cars.Where(c => c.Id == carId).FirstOrDefault();
+            CarViewModels cvm = new CarViewModels();
+            cvm.CarPlate = car.CarPlate;
+            cvm.EngineCapacity = car.EngineCapacity;
+            rdm.CarData = cvm;
+            Company company = context.Company.Where(c => c.CompanyID == car.CompanyId).FirstOrDefault();
+            CompanyViewModel covm = new CompanyViewModel();
+            covm.City = company.City;
+            covm.CompanyName = company.CompanyName;
+            covm.FlatNumber = company.FlatNumber;
+            covm.HouseNumber = company.HouseNumber;
+            covm.NIP = company.NIP;
+            covm.Street = company.Street;
+            covm.ZipCode = company.ZipCode;
+            rdm.CompanyData = covm;
+            rdm.DriversData = GetAllUsersByCarId(carId);
+            rdm.TravelsData = getTravelsByCarId(carId);
+            return rdm;
+        }
+
+        private List<TravelViewModels> getTravelsByCarId(int carId)
+        {
+            List<TravelViewModels> retval = new List<TravelViewModels>();
+            List<Travel> list = context.Travel.Where(t => t.CarId == carId).ToList();
+            foreach(Travel t in list)
+            {
+                TravelViewModels tvm = new TravelViewModels();
+                tvm.From = t.From;
+                tvm.Notes = t.Notes;
+                tvm.Purpose = t.Purpose;
+                tvm.StartKm = t.CarMileageStart.ToString();
+                tvm.StopKm = t.CarMileageStop.ToString();
+                tvm.To = t.To;
+                retval.Add(tvm);
+            }
             return retval;
         }
 

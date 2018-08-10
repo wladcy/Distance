@@ -164,6 +164,7 @@ namespace Distance.Controllers
                     user.Street = model.Street;
                     user.ZipCode = model.ZipCode;
                     user.CreateTime = DateTime.Now;
+                    user.TwoFactorEnabled = true;
                     user.ModyfiTime = DateTime.Now;                    
                     var currentUser = UserManager.FindByName(user.UserName);
                     var role = UserManager.AddToRole(currentUser.Id, "Administrator".ToUpper());
@@ -422,6 +423,16 @@ namespace Distance.Controllers
         public ActionResult ExternalLoginFailure()
         {
             return View();
+        }
+
+        [HttpGet]
+        public ActionResult SentMail()
+        {
+            string userId = User.Identity.GetUserId();
+            string code = UserManager.GenerateEmailConfirmationToken(userId);
+            var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = userId, code = code }, protocol: Request.Url.Scheme);
+            UserManager.SendEmailAsync(userId, "Potwierdź konto", "Kliknij <a href=\"" + callbackUrl + "\">link</a>, aby potwierdzić utworzenie konta.");
+            return RedirectToAction("Index", "Home", new { Message = AccountMessageId.ConfirmMailSendSuccess });          
         }
 
         protected override void Dispose(bool disposing)

@@ -48,6 +48,7 @@ else
                             {
                                 <button data-car-id="@car.Id" class="btn-link js-delete">Usuń</button>
                                 <button data-car-id="@car.Id" class="btn-link js-edit">Edytuj</button>
+                                <button data-car-id="@car.Id" class="btn-link js-report">Raport</button>
                             }
                             <button data-car-id="@car.Id" class="btn-link js-choose">Wybierz</button>
                         }
@@ -114,6 +115,11 @@ else
 
             $("#cars").on("click", ".js-stop", function () {
                 var url = "/Travels/StopTravel/" + $(this).attr("data-car-id");
+                window.location.href = url;
+            });
+
+            $("#cars").on("click", ".js-report", function () {
+                var url = "/Travels/Report/" + $(this).attr("data-car-id");
                 window.location.href = url;
             });
         });

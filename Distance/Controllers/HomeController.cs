@@ -16,7 +16,8 @@ namespace Distance.Controllers
             ViewBag.StatusMessage =
                 message == AccountMessageId.RegisterAccountSuccess ? "Konto zostało utworzone. Na maila dostałeś instrukcję pełnej aktywacji."
                 : message == AccountMessageId.StartTravelSuccess ? "Rozpocząłeś nową podróż służbową"
-                : message == AccountMessageId.StopTravelSuccess ? "Zakończyłeś podróż służbową" : "";
+                : message == AccountMessageId.StopTravelSuccess ? "Zakończyłeś podróż służbową" 
+                : message == AccountMessageId.ConfirmMailSendSuccess? "Mail z linkiem aktywacyjnym został wysłany": "";
             CurrentUserInTravelViewModels cuitvm = new CurrentUserInTravelViewModels();
             if (Request.IsAuthenticated)
             {
@@ -57,6 +58,7 @@ namespace Distance.Controllers
     {
         RegisterAccountSuccess,
         StartTravelSuccess,
-        StopTravelSuccess
+        StopTravelSuccess,
+        ConfirmMailSendSuccess
     }
 }

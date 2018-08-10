@@ -26,6 +26,7 @@ namespace Distance.Controllers
             {
                 cc.IsAdministrator = true;
             }
+            cc.IsAccountConfirmed = user.EmailConfirmed;
             DatabaseControler dc = new DatabaseControler();
             dc.GetCompany(ref cc, user.Id);
             return View(cc);

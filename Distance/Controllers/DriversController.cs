@@ -8,6 +8,7 @@ using System.Data.Entity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.AspNet.Identity;
 using Distance.App_Start;
+using System.ComponentModel.DataAnnotations;
 
 namespace Distance.Controllers
 {
@@ -56,7 +57,7 @@ namespace Distance.Controllers
             ApplicationUserManager userManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
             if (string.IsNullOrEmpty(model.Id))
             {
-                user = new ApplicationUser { UserName = model.Email, Email = model.Email };                
+                user = new ApplicationUser { UserName = model.Email, Email = model.Email };
                 result = userManager.Create(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -71,13 +72,13 @@ namespace Distance.Controllers
                     user.ModyfiTime = DateTime.Now;
                     user.EmailConfirmed = true;
                     user.PhoneNumberConfirmed = true;
-                    user.PhoneNumber = "+48"+model.Number;
+                    user.PhoneNumber = "+48" + model.Number;
                     user.TwoFactorEnabled = true;
                     var currentUser = userManager.FindByName(user.UserName);
-                    var role = userManager.AddToRole(currentUser.Id, "Kierowca".ToUpper());                            
+                    var role = userManager.AddToRole(currentUser.Id, "Kierowca".ToUpper());
                 }
                 AddErrors(result);
-            }                
+            }
             else
             {
                 user = dc.GetUserById(model.Id);
@@ -92,11 +93,11 @@ namespace Distance.Controllers
                 user.ModyfiTime = DateTime.Now;
                 user.Email = model.Email;
                 user.ModyfiTime = DateTime.Now;
-                user.PhoneNumber = model.Number;                
+                user.PhoneNumber = model.Number;
             }
 
             if (result.Succeeded)
-                dc.UpdateUserData(user,User.Identity.GetUserId());          
+                dc.UpdateUserData(user, User.Identity.GetUserId());
             return RedirectToAction("Index", "Drivers");
         }
 
@@ -200,11 +201,10 @@ namespace Distance.Controllers
         {
             //TODO Hasło powinno zawierać przynajmniej jeden znak niealfanumeryczny. Hasło powinno zawierać przynajmniej jedną cyfrę.
             //generated password doesn't meeting the system valitation requirements
-            const int MAXIMUM_IDENTICAL_CONSECUTIVE_CHARS = 1;
             const string LOWERCASE_CHARACTERS = "abcdefghijklmnopqrstuvwxyz";
             const string UPPERCASE_CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
             const string NUMERIC_CHARACTERS = "0123456789";
-            const string SPECIAL_CHARACTERS = @"!#$%&*@\,.";
+            const string SPECIAL_CHARACTERS = @"!#$%&*@\,.^()-=/+{}[];:'|?><";
             string characterSet = "";
 
             if (PasswordIdentityConfig.REQUIRELOWERCASE)
@@ -227,26 +227,35 @@ namespace Distance.Controllers
                 characterSet += SPECIAL_CHARACTERS;
             }
 
-            char[] password = new char[PasswordIdentityConfig.REQUIREDLENGTH];
+            string password = string.Empty;
             int characterSetLength = characterSet.Length;
 
-            System.Random random = new System.Random();
-            for (int characterPosition = 0; characterPosition < PasswordIdentityConfig.REQUIREDLENGTH; characterPosition++)
+            Random random = new Random();
+            while (password.Length != PasswordIdentityConfig.REQUIREDLENGTH)
             {
-                password[characterPosition] = characterSet[random.Next(characterSetLength - 1)];
-
-                bool moreThanTwoIdenticalInARow =
-                    characterPosition > MAXIMUM_IDENTICAL_CONSECUTIVE_CHARS
-                    && password[characterPosition] == password[characterPosition - 1]
-                    && password[characterPosition - 1] == password[characterPosition - 2];
-
-                if (moreThanTwoIdenticalInARow)
+                password = string.Empty;
+                while (!isPasswordCorrect(password) || password.Length < 6)
                 {
-                    characterPosition--;
+                    char c = characterSet[random.Next(characterSetLength - 1)];
+                    password += c;
+                    characterSet = characterSet.Replace(c.ToString(), "");
+                    characterSetLength = characterSet.Length;
                 }
+                characterSet = String.Concat(password.OrderBy(c=>c));
+                characterSetLength = password.Length;
             }
+            return password;
+        }
 
-            return string.Join(null, password);
+        private bool isPasswordCorrect(string password)
+        {
+            bool retval = false;
+            IPasswordViewModels pvm = new DriverViewModels();
+            pvm.Password = password;
+            ValidationContext vc = new ValidationContext(pvm);
+            Validators.PasswordValidator pv = new Validators.PasswordValidator();
+            retval = pv.IsValid(vc) == null;
+            return retval;
         }
     }
 }

@@ -69,5 +69,20 @@ namespace Distance.Controllers
             tvm.StopKm = string.Empty;
             return View("TravelsForm", tvm);
         }
+
+        public ActionResult Report(string id)
+        {
+            DatabaseControler dc = new DatabaseControler();
+            var userName = User.Identity.Name;
+            ApplicationUserManager userManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            var user = userManager.FindByName(userName);
+            int Id = 0;
+            if (!int.TryParse(id, out Id))
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            PdfController pc = new PdfController();
+            return new FileStreamResult(pc.CreateDistanceReportByCarId(Id), "application/pdf");
+        }
     }
 }
