@@ -373,7 +373,7 @@ namespace Distance.Controllers
             return retval;
         }
 
-        public ReportDataModel GetReportData(int carId)
+        public ReportDataModel GetReportData(int carId, int month, int year)
         {
             ReportDataModel rdm = new ReportDataModel();
             Cars car = context.Cars.Where(c => c.Id == carId).FirstOrDefault();
@@ -392,15 +392,57 @@ namespace Distance.Controllers
             covm.ZipCode = company.ZipCode;
             rdm.CompanyData = covm;
             rdm.DriversData = GetAllUsersByCarId(carId);
-            rdm.TravelsData = getTravelsByCarId(carId);
+            rdm.TravelsData = getTravelsByCarId(carId, month, year);
             return rdm;
         }
 
-        private List<TravelViewModels> getTravelsByCarId(int carId)
+        public SelectDateViewModel GetSelectDateModelByCarId(int carId)
+        {
+            List<Travel> list = context.Travel.Where(t => t.CarId == carId).ToList();
+            List<string> listYears = new List<string>();
+            List<string> listMounth = new List<string>();
+            List<DateViewModel> listYearsForModel = new List<DateViewModel>();
+            List<DateViewModel> listMounthForModel = new List<DateViewModel>();
+            int yearId = 1;
+            int mounthId = 1;
+            DateViewModel model = new DateViewModel();
+            model.Id = 0;
+            model.Value = "";
+            listMounthForModel.Add(model);
+            listYearsForModel.Add(model);
+            foreach (Travel t in list)
+            {
+                if (!listMounth.Contains((t.TravelDate.Month).ToString()))
+                {
+                    listMounth.Add((t.TravelDate.Month).ToString());
+                    DateViewModel dvm = new DateViewModel();
+                    dvm.Id = mounthId;
+                    dvm.Value = t.TravelDate.Month.ToString();
+                    listMounthForModel.Add(dvm);
+                    mounthId++;
+                }
+                if (!listYears.Contains(t.TravelDate.Year.ToString()))
+                {
+                    listYears.Add(t.TravelDate.Year.ToString());
+                    DateViewModel dvm = new DateViewModel();
+                    dvm.Id = yearId;
+                    dvm.Value = t.TravelDate.Year.ToString();
+                    listYearsForModel.Add(dvm);
+                    yearId++;
+                }
+            }
+            SelectDateViewModel retval = new SelectDateViewModel();
+            retval.CarId = carId;
+            retval.Mounth = listMounthForModel;
+            retval.Year = listYearsForModel;
+            return retval;
+        }
+
+        private List<TravelViewModels> getTravelsByCarId(int carId, int month, int year)
         {
             List<TravelViewModels> retval = new List<TravelViewModels>();
-            List<Travel> list = context.Travel.Where(t => t.CarId == carId).ToList();
-            foreach(Travel t in list)
+            List<Travel> list = context.Travel.Where(t => t.CarId == carId && t.TravelDate.Month == month && t.TravelDate.Year == year).ToList();
+            foreach (Travel t in list)
             {
                 TravelViewModels tvm = new TravelViewModels();
                 tvm.From = t.From;
@@ -409,6 +451,7 @@ namespace Distance.Controllers
                 tvm.StartKm = t.CarMileageStart.ToString();
                 tvm.StopKm = t.CarMileageStop.ToString();
                 tvm.To = t.To;
+                tvm.TravelDate = t.TravelDate;
                 retval.Add(tvm);
             }
             return retval;

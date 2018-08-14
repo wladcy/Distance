@@ -81,8 +81,23 @@ namespace Distance.Controllers
             {
                 return RedirectToAction("Index", "Home");
             }
+            SelectDateViewModel sdvm = dc.GetSelectDateModelByCarId(Id);
+            return View("SelectDate", sdvm);
+        }
+
+        [HttpPost]
+        public ActionResult Report(SelectDateViewModel model)
+        {
+            DatabaseControler dc = new DatabaseControler();
+            SelectDateViewModel selectModel = dc.GetSelectDateModelByCarId(model.CarId);
+            selectModel.MonthId = model.MonthId;
+            selectModel.YearId = model.YearId;
+            if (!ModelState.IsValid)
+            {                
+                return View("SelectDate", selectModel);
+            }
             PdfController pc = new PdfController();
-            return new FileStreamResult(pc.CreateDistanceReportByCarId(Id), "application/pdf");
+            return new FileStreamResult(pc.CreateDistanceReportByCarId(model.CarId,int.Parse(selectModel.Mounth.ToList()[model.MonthId].Value),int.Parse(selectModel.Year.ToList()[model.YearId].Value)), "application/pdf");
         }
     }
 }

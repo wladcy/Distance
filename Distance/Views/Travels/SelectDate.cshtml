@@ -1,0 +1,29 @@
+﻿@model Distance.Models.SelectDateViewModel
+@{
+    ViewBag.Title = "Wybierz miesiąc";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 style="color:white">Wybierz miesiąc</h2>
+<div style="color:white;background-color:#2F3336;">
+    @using (Html.BeginForm("Report", "Travels"))
+    {
+        @Html.ValidationSummary()
+        <div class="form-group">
+            @Html.LabelFor(m => m.Mounth)
+            @Html.DropDownListFor(m => m.MonthId, new SelectList(Model.Mounth, "Id", "Value"), new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Mounth)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Year)
+            @Html.DropDownListFor(m => m.YearId, new SelectList(Model.Year, "Id", "Value"), new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Year)
+        </div>
+
+        @Html.HiddenFor(m => m.CarId)
+        
+        @Html.AntiForgeryToken()
+        <button type="submit" class="btn btn-primary">Wybierz</button>
+    }
+</div>
+

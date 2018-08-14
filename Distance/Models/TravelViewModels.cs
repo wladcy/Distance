@@ -42,5 +42,29 @@ namespace Distance.Models
         public string Button { get; set; }
         public int CarId { get; set; }
         public bool StartTravel { get; set; }
+        public DateTime TravelDate { get; set; }
+    }
+
+    public class SelectDateViewModel
+    {        
+        public IEnumerable<DateViewModel> Mounth { get; set; }
+        
+        public IEnumerable<DateViewModel> Year { get; set; }
+
+        public int CarId { get; set; }
+
+        [Required]
+        [Display(Name = "Miesiąc")]
+        public int MonthId { get; set; }
+
+        [Required]
+        [Display(Name = "Rok")]
+        public int YearId { get; set; }
+    }
+
+    public class DateViewModel
+    {
+        public int Id { get; set; }
+        public string Value { get; set; }
     }
 }

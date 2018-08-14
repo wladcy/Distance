@@ -11,13 +11,30 @@ namespace Distance.Controllers
 {
     public class PdfController
     {
-        public MemoryStream CreateDistanceReportByCarId(int id)
+        private Dictionary<int, string> months;
+        public PdfController()
+        {
+            months = new Dictionary<int, string>();
+            months.Add(1, "Styczeń");
+            months.Add(2, "Luty");
+            months.Add(3, "Marzec");
+            months.Add(4, "Kwiecień");
+            months.Add(5, "Maj");
+            months.Add(6, "Czerwiec");
+            months.Add(7, "Lipiec");
+            months.Add(8, "Sierpień");
+            months.Add(9, "Wrzesień");
+            months.Add(10, "Październik");
+            months.Add(11, "Listopad");
+            months.Add(12, "Grudzień");
+        }
+        public MemoryStream CreateDistanceReportByCarId(int id, int monthNumber, int year)
         {
             MemoryStream retval = new MemoryStream();
             Document document = new Document(PageSize.A4);
             PdfWriter.GetInstance(document, retval).CloseStream = false;
             DatabaseControler dc = new DatabaseControler();
-            ReportDataModel rdm = dc.GetReportData(id);
+            ReportDataModel rdm = dc.GetReportData(id, monthNumber,year);
             Font f = new Font(BaseFont.CreateFont(@"C:\Windows\Fonts\times.ttf", BaseFont.CP1250, true));
             Font fHeader = new Font(BaseFont.CreateFont(@"C:\Windows\Fonts\times.ttf", BaseFont.CP1250, true));
             f.Size = 8;
@@ -33,9 +50,9 @@ namespace Distance.Controllers
             table.SetWidths(new float[] { 1, 3 });
             PdfPCell cellf1 = new PdfPCell();
             cellf1.Border = Rectangle.NO_BORDER;
-            cellf1.AddElement(new Paragraph("Nazwa firmy",f));
+            cellf1.AddElement(new Paragraph("Nazwa firmy", f));
             PdfPCell cellf2 = new PdfPCell();
-            cellf2.Border = Rectangle.NO_BORDER; 
+            cellf2.Border = Rectangle.NO_BORDER;
             cellf2.AddElement(new Paragraph(rdm.CompanyData.CompanyName, f));
             PdfPCell cellf3 = new PdfPCell();
             cellf3.Border = Rectangle.NO_BORDER;
@@ -55,14 +72,14 @@ namespace Distance.Controllers
             table.AddCell(cellf4);
             table.AddCell(cellf5);
             table.AddCell(cellf6);
-            table.DefaultCell.Border = Rectangle.NO_BORDER;            
-            table.HorizontalAlignment = Element.ALIGN_LEFT;           
+            table.DefaultCell.Border = Rectangle.NO_BORDER;
+            table.HorizontalAlignment = Element.ALIGN_LEFT;
             document.Open();
-            
+
             PdfPCell right = new PdfPCell();
             right.AddElement(company);
             right.AddElement(table);
-            right.Border = Rectangle.NO_BORDER;                       
+            right.Border = Rectangle.NO_BORDER;
             Paragraph empty = new Paragraph("", fHeader);
             right.AddElement(empty);
             Paragraph drivers = new Paragraph("Dane kierowców", fHeader);
@@ -118,7 +135,7 @@ namespace Distance.Controllers
             celle3.AddElement(new Paragraph("Pojemność silnika", f));
             PdfPCell celle4 = new PdfPCell();
             celle4.Border = Rectangle.NO_BORDER;
-            celle4.AddElement(new Paragraph(rdm.CarData.EngineCapacity.ToString()+" [cm3]", f));
+            celle4.AddElement(new Paragraph(rdm.CarData.EngineCapacity.ToString() + " [cm3]", f));
             enginetable.AddCell(celle1);
             enginetable.AddCell(celle2);
             enginetable.AddCell(celle3);
@@ -137,9 +154,102 @@ namespace Distance.Controllers
             Font fparagrafBold = new Font(BaseFont.CreateFont(@"C:\Windows\Fonts\times.ttf", BaseFont.CP1250, true));
             fparagrafBold.Size = 10;
             fparagrafBold.SetStyle(0);
-            Paragraph month = new Paragraph("za miesiąc ", fparagrafBold);//TODO
+            Paragraph month = new Paragraph("za miesiąc " + months[monthNumber], fparagrafBold);
             month.Alignment = Element.ALIGN_CENTER;
+            Paragraph empty2 = new Paragraph(" ", fHeader);
             document.Add(month);
+            document.Add(empty2);
+            PdfPTable travelsTable = new PdfPTable(9);
+            travelsTable.PaddingTop = 50;
+            travelsTable.WidthPercentage = 100.0f;
+            PdfPCell cellNr = new PdfPCell();
+            cellNr.AddElement(new Paragraph("Nr kolejny wpisu", f));
+            travelsTable.AddCell(cellNr);
+            PdfPCell cellDate = new PdfPCell();
+            cellDate.AddElement(new Paragraph("Data wyjazdu", f));
+            travelsTable.AddCell(cellDate);
+            PdfPCell cellDesc = new PdfPCell();
+            cellDesc.AddElement(new Paragraph("Opis trasy wyjazdu (skąd-dokąd)", f));
+            travelsTable.AddCell(cellDesc);
+            PdfPCell cellPurpose = new PdfPCell();
+            cellPurpose.AddElement(new Paragraph("Cel wyjazdu", f));
+            travelsTable.AddCell(cellPurpose);
+            PdfPCell cellKmCount = new PdfPCell();
+            cellKmCount.AddElement(new Paragraph("Liczba faktycznie przejechanych kilometrów", f));
+            travelsTable.AddCell(cellKmCount);
+            PdfPCell cellOneKm = new PdfPCell();
+            cellOneKm.AddElement(new Paragraph("Stawka za 1 km przebiegu", f));
+            travelsTable.AddCell(cellOneKm);
+            PdfPCell cellMoney = new PdfPCell();
+            cellMoney.AddElement(new Paragraph("Wartość", f));
+            travelsTable.AddCell(cellMoney);
+            PdfPCell cellSignature = new PdfPCell();
+            cellSignature.AddElement(new Paragraph("Podpis podatnika", f));
+            travelsTable.AddCell(cellSignature);
+            PdfPCell cellNotes = new PdfPCell();
+            cellNotes.AddElement(new Paragraph("Uwagi", f));
+            travelsTable.AddCell(cellNotes);
+            float oneMoney = rdm.CarData.EngineCapacity <= 900 ? 0.5214f : 0.8358f;
+            int travelNr = 1;
+            int sumDistance = 0;
+            float sumMoney = 0;
+            foreach (TravelViewModels travel in rdm.TravelsData)
+            {
+                PdfPCell cellNrFor = new PdfPCell();
+                cellNrFor.AddElement(new Paragraph(travelNr.ToString(), f));
+                travelNr++;
+                travelsTable.AddCell(cellNrFor);
+                PdfPCell cellDateFor = new PdfPCell();
+                cellDateFor.AddElement(new Paragraph(travel.TravelDate.ToShortDateString(), f));
+                travelsTable.AddCell(cellDateFor);
+                PdfPCell cellDescFor = new PdfPCell();
+                cellDescFor.AddElement(new Paragraph(travel.From+"-"+travel.To, f));
+                travelsTable.AddCell(cellDescFor);
+                PdfPCell cellPurposeFor = new PdfPCell();
+                cellPurposeFor.AddElement(new Paragraph(travel.Purpose, f));
+                travelsTable.AddCell(cellPurposeFor);
+                PdfPCell cellKmCountFor = new PdfPCell();
+                int distance = int.Parse(travel.StopKm) - int.Parse(travel.StartKm);
+                sumDistance += distance;
+                cellKmCountFor.AddElement(new Paragraph(distance.ToString(), f));
+                travelsTable.AddCell(cellKmCountFor);
+                PdfPCell cellOneKmFor = new PdfPCell();
+                cellOneKmFor.AddElement(new Paragraph(oneMoney.ToString(), f));
+                travelsTable.AddCell(cellOneKmFor);
+                PdfPCell cellMoneyFor = new PdfPCell();
+                float money = distance * oneMoney;
+                sumMoney += money;
+                cellMoneyFor.AddElement(new Paragraph(Math.Round(money,2,MidpointRounding.AwayFromZero).ToString(), f));
+                travelsTable.AddCell(cellMoneyFor);
+                PdfPCell cellSignatureFor = new PdfPCell();
+                cellSignatureFor.AddElement(new Paragraph(" ", f));
+                travelsTable.AddCell(cellSignatureFor);
+                PdfPCell cellNotesFor = new PdfPCell();
+                cellNotesFor.AddElement(new Paragraph(travel.Notes, f));
+                travelsTable.AddCell(cellNotesFor);
+            }
+            PdfPCell sum = new PdfPCell();
+            Paragraph sumParagaph = new Paragraph("Razem     ", f);
+            sumParagaph.Alignment = Element.ALIGN_RIGHT;
+            sum.AddElement(sumParagaph);
+            sum.HorizontalAlignment = Element.ALIGN_RIGHT;
+            sum.Colspan = 4;
+            travelsTable.AddCell(sum);
+            PdfPCell sumKm = new PdfPCell();
+            sumKm.AddElement(new Paragraph(sumDistance.ToString(), f));
+            travelsTable.AddCell(sumKm);
+            PdfPCell emptyGray = new PdfPCell();
+            emptyGray.AddElement(new Paragraph(" ", f));
+            emptyGray.BackgroundColor = BaseColor.GRAY;
+            travelsTable.AddCell(emptyGray);
+            PdfPCell sumMoneyCell = new PdfPCell();
+            sumMoneyCell.AddElement(new Paragraph(Math.Round(sumMoney, 2, MidpointRounding.AwayFromZero).ToString(), f));
+            travelsTable.AddCell(sumMoneyCell);
+            travelsTable.AddCell(emptyGray);
+            travelsTable.AddCell(emptyGray);
+
+            document.Add(travelsTable);
+            document.AddTitle("Kilometrówka " + rdm.CarData.CarPlate.ToUpper() + " - " + months[monthNumber]);
             document.Close();
 
             byte[] byteInfo = retval.ToArray();
