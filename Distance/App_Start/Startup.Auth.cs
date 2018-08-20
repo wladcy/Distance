@@ -55,9 +55,9 @@ namespace Distance
             //   consumerSecret: "");
 
             //Create new app in Facebook For Developers and flll appId and appSecret
-            app.UseFacebookAuthentication(
-               appId: "",
-               appSecret: "");
+            //app.UseFacebookAuthentication(
+            //   appId: "",
+            //   appSecret: "");
 
             //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
             //{

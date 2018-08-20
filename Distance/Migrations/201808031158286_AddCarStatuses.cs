@@ -7,8 +7,8 @@ namespace Distance.Migrations
     {
         public override void Up()
         {
-            Sql("INSERT INTO CarStatuses (Id, StatusName) VALUES (1, 'Dostêpny')");
-            Sql("INSERT INTO CarStatuses (Id, StatusName) VALUES (2, 'W trasie')");
+            Sql("INSERT INTO CarStatuses (Id, Status) VALUES (1, 'Dostêpny')");
+            Sql("INSERT INTO CarStatuses (Id, Status) VALUES (2, 'W trasie')");
         }
         
         public override void Down()
