@@ -1,0 +1,1 @@
+﻿SELECT [Name] FROM [AspNetRoles] AS roles, [AspNetUserRoles] AS users WHERE roles.Id = users.RoleId AND users.UserId='b44ea563-f075-478a-95d9-d7fa13146c72'

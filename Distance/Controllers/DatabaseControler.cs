@@ -369,11 +369,11 @@ namespace Distance.Controllers
 
         public List<string> GetUserRoles(ApplicationUser user)
         {
-            //List<string> retval = context.Database.SqlQuery<string>("select [Name] from [Distance].[dbo].[AspNetRoles] as roles, [Distance].[dbo].[AspNetUserRoles] as users where roles.Id=users.RoleId and users.UserId='" + user.Id + "'").ToList();
-            List<string> retval = new List<string>(new string[]
-            {
-                "ADMINISTRATOR"
-            });
+            List<string> retval = context.Database.SqlQuery<string>($"SELECT [Name] FROM [AspNetRoles] AS roles, [AspNetUserRoles] AS users WHERE roles.Id = users.RoleId AND users.UserId='{user.Id}'").ToList();
+            //List<string> retval = new List<string>(new string[]
+            //{
+            //    "ADMINISTRATOR"
+            //});
             return retval;
         }
 
@@ -472,7 +472,7 @@ namespace Distance.Controllers
 
         private byte getCarStatusId(string statusName)
         {
-            CarStatuses car = context.CarStatuses.Where(c => c.Status.Equals(statusName)).FirstOrDefault();
+            CarStatuses car = context.CarStatuses.Where(c => c.Status.Equals(statusName)).SingleOrDefault();
             return car.Id;
         }
 
