@@ -120,7 +120,7 @@ namespace Distance.Controllers
         }
 
         //szczegóły kierowcow
-        public ActionResult Details(int id)
+        public ActionResult Details(string id)
         {
             var driver = _context.Users.SingleOrDefault(d => d.Id.Equals(id));
 
