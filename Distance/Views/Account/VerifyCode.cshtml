@@ -3,7 +3,7 @@
     ViewBag.Title = "Weryfikacja logowania";
 }
 
-<body>
+<body style="background-color:#2F3336;">
     <h2 style="color:white;">@ViewBag.Title</h2>
 
     @using (Html.BeginForm("VerifyCode", "Account", new { ReturnUrl = Model.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
