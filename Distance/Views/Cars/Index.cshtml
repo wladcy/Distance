@@ -5,68 +5,69 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@if (!Model.IsSetCompany)
-{
-    <p>Przed dodaniem pojazdów uzupełnij dane firmy!!!</p>
-}
-else
-{
-    <h2>Dostępne samochody</h2>
-    if (Model.IsAdministrator)
+<body style="background-color:#2F3336; color:white;">
+    @if (!Model.IsSetCompany)
     {
-        <p>
-            @Html.ActionLink("Dodaj Samochód", "New", "Cars", null, new { @class = "btn btn-primary" })
-        </p>
+        <p>Przed dodaniem pojazdów uzupełnij dane firmy!!!</p>
     }
+    else
+    {
+        <h2>Dostępne samochody</h2>
+        if (Model.IsAdministrator)
+        {
+            <p>
+                @Html.ActionLink("Dodaj Samochód", "New", "Cars", null, new { @class = "btn btn-primary" })
+            </p>
+        }
 
-    <table id="cars" class="table-bordered table-hover">
-        <thead>
-            <tr>
-                <th>Marka</th>
-                <th>Model</th>
-                <th>Rejestracja</th>
-                <th>Aktualny przebieg</th>
-                <th>Pojemność silnika</th>
-                <th>Status</th>
-                <th>Akcje</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var car in Model.CarList)
-            {
+        <table id="cars" class="table-bordered table-hover">
+            <thead>
                 <tr>
-                    <td>@car.Name</td>
-                    <td>@car.Model</td>
-                    <td>@car.CarPlate</td>
-                    <td>@car.KmAge</td>
-                    <td>@car.EngineCapacity</td>
-                    <td>@car.CarStatus.First().Status</td>
-                    <td>
-                        @if (car.CarStatus.First().Status.Equals("Dostępny"))
-                        {
-                            if (Model.IsAdministrator)
-                            {
-                                <button data-car-id="@car.Id" class="btn-link js-delete">Usuń</button>
-                                <button data-car-id="@car.Id" class="btn-link js-edit">Edytuj</button>
-                                <button data-car-id="@car.Id" class="btn-link js-report">Raport</button>
-                            }
-                            <button data-car-id="@car.Id" class="btn-link js-choose">Wybierz</button>
-                        }
-                        else if (car.InTravelWithCurrentUser)
-                        {
-                            <button data-car-id="@car.Id" class="btn-link js-stop">Zakończ podróż</button>
-                        }
-                        else
-                        {
-                            @("Brak dostępnych akcji")
-                        }
-                    </td>
+                    <th>Marka</th>
+                    <th>Model</th>
+                    <th>Rejestracja</th>
+                    <th>Aktualny przebieg</th>
+                    <th>Pojemność silnika</th>
+                    <th>Status</th>
+                    <th>Akcje</th>
                 </tr>
-            }
-        </tbody>
-    </table>
-}
-
+            </thead>
+            <tbody>
+                @foreach (var car in Model.CarList)
+                {
+                    <tr>
+                        <td>@car.Name</td>
+                        <td>@car.Model</td>
+                        <td>@car.CarPlate</td>
+                        <td>@car.KmAge</td>
+                        <td>@car.EngineCapacity</td>
+                        <td>@car.CarStatus.First().Status</td>
+                        <td>
+                            @if (car.CarStatus.First().Status.Equals("Dostępny"))
+                            {
+                                if (Model.IsAdministrator)
+                                {
+                                    <button data-car-id="@car.Id" class="btn-link js-delete">Usuń</button>
+                                    <button data-car-id="@car.Id" class="btn-link js-edit">Edytuj</button>
+                                    <button data-car-id="@car.Id" class="btn-link js-report">Raport</button>
+                                }
+                                <button data-car-id="@car.Id" class="btn-link js-choose">Wybierz</button>
+                            }
+                            else if (car.InTravelWithCurrentUser)
+                            {
+                                <button data-car-id="@car.Id" class="btn-link js-stop">Zakończ podróż</button>
+                            }
+                            else
+                            {
+                                @("Brak dostępnych akcji")
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</body>
 @section scripts
 {
     <script>
