@@ -6,13 +6,13 @@
     <div>
         @if (Request.IsAuthenticated)
         {
-            <p>
+            <p style="color:white;">
                 Dziękujemy za potwierdzenie maila.
             </p>
         }
         else
         {
-            <p>
+            <p style="color:white;">
                 Dziękujemy za potwierdzenie maila. Proszę @Html.ActionLink("kliknąć", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" }), aby zalogować.
             </p>
         }
