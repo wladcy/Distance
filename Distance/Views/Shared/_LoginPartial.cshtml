@@ -1,6 +1,6 @@
 ﻿<body style="background-color:#2F3336; color:white;">
-    @using Microsoft.AspNet.Identity
-    @using Distance.Controllers
+@using Microsoft.AspNet.Identity
+@using Distance.Controllers
     @if (Request.IsAuthenticated)
     {
         using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))

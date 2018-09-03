@@ -17,7 +17,7 @@ namespace Distance.Controllers
     public class DriversController : Controller
     {
         private ApplicationDbContext _context;
-        private readonly IDatabaseControler _databaseController;
+        private static IDatabaseControler _databaseController;
 
         //dbcontext dla bazy danych
         public DriversController(ApplicationDbContext context, IDatabaseControler databaseController)
@@ -160,17 +160,17 @@ namespace Distance.Controllers
             return View("DriverForm", viewModel);
         }
 
-        public object GetUserNameById(string Id)
+        public static string GetUserNameById(string Id)
         {
             //IDatabaseControler dc = new DatabaseControler();
             ApplicationUser user = _databaseController.GetUserById(Id);
             if (user == null)
-                return HttpNotFound();
+                return null;
             else
             return user.FirstName + " " + user.LastName;
         }
 
-        public bool IsAdministrator(string Id)
+        public static bool IsAdministrator(string Id)
         {
             bool retval = false;
             //DatabaseControler dc = new DatabaseControler();

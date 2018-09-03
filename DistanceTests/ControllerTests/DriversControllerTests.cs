@@ -27,7 +27,7 @@ namespace DistanceTests.ControllerTests
             var driverService = new DriversController(driverContextMock.Object, databaseControlerMock.Object);
 
             //Act
-            var driver = driverService.GetUserNameById(Id);
+            var driver = DriversController.GetUserNameById(Id);
 
             //Assert
             driver.Should().NotBeNull();
@@ -36,7 +36,7 @@ namespace DistanceTests.ControllerTests
         }
 
         [Theory, AutoData]
-        public void InValidId_ShouldReturn_HttpNotFound(string Id, ApplicationUser user)
+        public void InValidId_ShouldReturn_Null(string Id, ApplicationUser user)
         {
             //Arrange
             var driverContextMock = new Mock<ApplicationDbContext>();
@@ -47,10 +47,10 @@ namespace DistanceTests.ControllerTests
             var driverService = new DriversController(driverContextMock.Object, databaseControlerMock.Object);
 
             //Act
-            var driver = driverService.GetUserNameById(null);
+            var driver = DriversController.GetUserNameById(null);
 
             //Assert
-            driver.Should().BeOfType<HttpNotFoundResult>();
+            driver.Should().BeNull();
         }
 
         [Theory, AutoData]
@@ -69,7 +69,7 @@ namespace DistanceTests.ControllerTests
             var driverService = new DriversController(driverContextMock.Object, databaseControlerMock.Object);
 
             //Act
-            var driver = driverService.IsAdministrator(Id);
+            var driver = DriversController.IsAdministrator(Id);
 
             //Assert
             driver.Should().BeFalse();
@@ -94,7 +94,7 @@ namespace DistanceTests.ControllerTests
             var driverService = new DriversController(driverContextMock.Object, databaseControlerMock.Object);
 
             //Act
-            var driver = driverService.IsAdministrator(Id);
+            var driver = DriversController.IsAdministrator(Id);
 
             //Assert
             driver.Should().BeTrue();
