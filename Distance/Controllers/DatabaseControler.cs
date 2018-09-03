@@ -4,11 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Data.Entity;
 using System.Web;
+using Distance.ControllerInteraces;
 using static Distance.Models.AddPhoneNumberViewModel;
 
 namespace Distance.Controllers
 {
-    public class DatabaseControler
+    public class DatabaseControler : IDatabaseControler
     {
         private ApplicationDbContext context;
 
@@ -132,7 +133,7 @@ namespace Distance.Controllers
             context.SaveChanges();
         }
 
-        public CarViewModels GetCarById(int id)
+        public virtual CarViewModels GetCarById(int id)
         {
             Cars car = context.Cars.Where(c => c.Id == id).FirstOrDefault();
             CarViewModels retval = new CarViewModels();

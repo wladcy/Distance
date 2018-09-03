@@ -15,9 +15,9 @@ namespace Distance.Controllers
     {
         private ApplicationDbContext _context;
 
-        public CarsController()
+        public CarsController(ApplicationDbContext context)
         {
-            _context = new ApplicationDbContext();
+            _context = context;
         }
 
         protected override void Dispose(bool disposing)

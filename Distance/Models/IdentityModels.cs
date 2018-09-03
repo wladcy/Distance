@@ -137,11 +137,11 @@ namespace Distance.Models
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {        
-        public DbSet<Cars> Cars { get; set; }        
-        public DbSet<CarStatuses> CarStatuses { get; set; }
+        public virtual DbSet<Cars> Cars { get; set; }        
+        public virtual DbSet<CarStatuses> CarStatuses { get; set; }
         public DbSet<DicCountries> DicCountries { get; set; }
         public DbSet<Company> Company { get; set; }
-        public DbSet<UserInCompany> UserInCompany { get; set; }
+        public virtual DbSet<UserInCompany> UserInCompany { get; set; }
         public DbSet<Travel> Travel { get; set; }
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)

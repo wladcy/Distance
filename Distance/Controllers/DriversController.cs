@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.AspNet.Identity;
 using Distance.App_Start;
 using System.ComponentModel.DataAnnotations;
+using Distance.ControllerInteraces;
 
 namespace Distance.Controllers
 {
@@ -16,11 +17,13 @@ namespace Distance.Controllers
     public class DriversController : Controller
     {
         private ApplicationDbContext _context;
+        private readonly IDatabaseControler _databaseController;
 
         //dbcontext dla bazy danych
-        public DriversController()
+        public DriversController(ApplicationDbContext context, IDatabaseControler databaseController)
         {
-            _context = new ApplicationDbContext();
+            _context = context;
+            _databaseController = databaseController;
         }
 
         protected override void Dispose(bool disposing)
@@ -157,19 +160,22 @@ namespace Distance.Controllers
             return View("DriverForm", viewModel);
         }
 
-        public static string GetUserNameById(string Id)
+        public object GetUserNameById(string Id)
         {
-            DatabaseControler dc = new DatabaseControler();
-            ApplicationUser user = dc.GetUserById(Id);
+            //IDatabaseControler dc = new DatabaseControler();
+            ApplicationUser user = _databaseController.GetUserById(Id);
+            if (user == null)
+                return HttpNotFound();
+            else
             return user.FirstName + " " + user.LastName;
         }
 
-        public static bool IsAdministrator(string Id)
+        public bool IsAdministrator(string Id)
         {
             bool retval = false;
-            DatabaseControler dc = new DatabaseControler();
-            ApplicationUser user = dc.GetUserById(Id);
-            if (dc.GetUserRoles(user).Contains("ADMINISTRATOR"))
+            //DatabaseControler dc = new DatabaseControler();
+            ApplicationUser user = _databaseController.GetUserById(Id);
+            if (_databaseController.GetUserRoles(user).Contains("ADMINISTRATOR"))
             {
                 retval = true;
             }
