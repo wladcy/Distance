@@ -258,7 +258,7 @@ namespace Distance.Controllers
             return retval;
         }
 
-        private string getAddress(IAddressViewModel Model)
+        public string getAddress(IAddressViewModel Model)
         {
             string retval = string.Empty;
             if (!string.IsNullOrEmpty(Model.FlatNumber) && !string.IsNullOrEmpty(Model.Street))
