@@ -10,6 +10,10 @@ using Autofac;
 using Autofac.Integration.Mvc;
 using AutoMapper;
 using Distance.App_Start;
+using Distance.ControllerInteraces;
+using Distance.Controllers;
+using Distance.Models;
+
 
 namespace Distance
 {
@@ -25,12 +29,14 @@ namespace Distance
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
         }
+
         private void ConfigureContainer()
         {
             var builder = new ContainerBuilder();
             builder.RegisterControllers(typeof(MvcApplication).Assembly);
             builder.RegisterAssemblyModules(typeof(MvcApplication).Assembly);
             var container = builder.Build();
+            DatabaseControler.Container = container;
             DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
         }
     }

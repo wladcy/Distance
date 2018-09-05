@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Data.Entity;
 using System.Web;
+using Autofac;
 using Distance.ControllerInteraces;
 using static Distance.Models.AddPhoneNumberViewModel;
 
@@ -12,6 +13,7 @@ namespace Distance.Controllers
     public class DatabaseControler : IDatabaseControler
     {
         private ApplicationDbContext context;
+        public static IContainer Container;
 
         public DatabaseControler()
         {
@@ -347,7 +349,7 @@ namespace Distance.Controllers
             return retval;
         }
 
-        public ApplicationUser GetUserById(string id)
+        public virtual ApplicationUser GetUserById(string id)
         {
             ApplicationUser retval = context.Users.Where(u => u.Id.Equals(id)).FirstOrDefault();
             return retval;

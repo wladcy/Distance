@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Distance.App_Start;
+using Distance.ControllerInteraces;
+using Distance.Models;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+using System;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using Distance.Models;
-using System.Data.Entity;
-using Microsoft.AspNet.Identity.Owin;
-using Microsoft.AspNet.Identity;
-using Distance.App_Start;
-using System.ComponentModel.DataAnnotations;
-using Distance.ControllerInteraces;
 
 namespace Distance.Controllers
 {
@@ -162,8 +160,8 @@ namespace Distance.Controllers
 
         public static string GetUserNameById(string Id)
         {
-            //IDatabaseControler dc = new DatabaseControler();
-            ApplicationUser user = _databaseController.GetUserById(Id);
+            IDatabaseControler dc = new DatabaseControler();
+            ApplicationUser user = dc.GetUserById(Id);
             if (user == null)
                 return null;
             else
@@ -173,9 +171,10 @@ namespace Distance.Controllers
         public static bool IsAdministrator(string Id)
         {
             bool retval = false;
-            //DatabaseControler dc = new DatabaseControler();
-            ApplicationUser user = _databaseController.GetUserById(Id);
-            if (_databaseController.GetUserRoles(user).Contains("ADMINISTRATOR"))
+
+            DatabaseControler dc = new DatabaseControler();
+            ApplicationUser user = dc.GetUserById(Id);
+            if (dc.GetUserRoles(user).Contains("ADMINISTRATOR"))
             {
                 retval = true;
             }

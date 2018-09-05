@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Web.Mvc;
+using Autofac;
 using AutoFixture.Xunit2;
 using Distance.ControllerInteraces;
 using Distance.Controllers;
+
 using Distance.Models;
 using FluentAssertions;
 using Moq;
@@ -21,10 +23,16 @@ namespace DistanceTests.ControllerTests
             //Arrange
             var driverContextMock = new Mock<ApplicationDbContext>();
             var databaseControlerMock = new Mock<IDatabaseControler>();
+            var containerMock = new Mock<IContainer>();
+          
+
             databaseControlerMock.Setup(d => d.GetUserById(Id))
                 .Returns(user);
 
-            var driverService = new DriversController(driverContextMock.Object, databaseControlerMock.Object);
+            //containerMock.Setup(x => x.Resolve<IDatabaseControler>())
+            //    .Returns(databaseControlerMock.Object);
+
+         //   var driverService = new DriversController(new ApplicationDbContext(), new DatabaseControler());
 
             //Act
             var driver = DriversController.GetUserNameById(Id);
@@ -44,7 +52,7 @@ namespace DistanceTests.ControllerTests
             databaseControlerMock.Setup(d => d.GetUserById(Id))
                 .Returns(user);
 
-            var driverService = new DriversController(driverContextMock.Object, databaseControlerMock.Object);
+            //var driverService = new DriversController(driverContextMock.Object, databaseControlerMock.Object);
 
             //Act
             var driver = DriversController.GetUserNameById(null);
@@ -66,7 +74,7 @@ namespace DistanceTests.ControllerTests
             databaseControlerMock.Setup(d => d.GetUserRoles(user))
                 .Returns(new List<string>());
 
-            var driverService = new DriversController(driverContextMock.Object, databaseControlerMock.Object);
+            //var driverService = new DriversController(new ApplicationDbContext(), databaseControlerMock.Object);
 
             //Act
             var driver = DriversController.IsAdministrator(Id);
@@ -91,7 +99,7 @@ namespace DistanceTests.ControllerTests
                     "ADMINISTRATOR"
                 }));
 
-            var driverService = new DriversController(driverContextMock.Object, databaseControlerMock.Object);
+           // var driverService = new DriversController(driverContextMock.Object, databaseControlerMock.Object);
 
             //Act
             var driver = DriversController.IsAdministrator(Id);
